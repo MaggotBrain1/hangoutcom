@@ -29,4 +29,18 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route(path: '/profile', name: 'app-profile')]
+    public function profile(int $id, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($id);
+
+        if(!$user){
+            throw $this->createNotFoundException("Oh no !!");
+        }
+
+        return $this->render("user/profile.html.twig",
+            ["user" => $user
+            ]);
+    }
 }
