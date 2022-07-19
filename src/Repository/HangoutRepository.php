@@ -39,6 +39,7 @@ class HangoutRepository extends ServiceEntityRepository
         }
     }
 
+
 //    /**
 //     * @return Hangout[] Returns an array of Hangout objects
 //     */
