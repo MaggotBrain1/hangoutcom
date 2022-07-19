@@ -29,6 +29,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     {
         $email = $request->request->get('email', '');
 
+
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         return new Passport(
@@ -46,7 +47,6 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
          return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
