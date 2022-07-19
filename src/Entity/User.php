@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Hangout::class, inversedBy: 'hangouts')]
     private Collection $hangout;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(inversedBy: 'users',cascade: ["persist"] )]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
 
