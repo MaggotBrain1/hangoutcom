@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mon profil</h1>
+    <div><input type="text" name="name" value="{{ app.user.name }}">Prénom : </div>
+    <div><input type="text" name="lastname" value="{{ app.user.lastName }}">Nom : </div>
+    <div><input type="text" name="phone" value="{{ app.user.phone }}">Téléphone : </div>
+    <div><input type="text" name="email" value="{{ app.user.email }}">Emaill : </div>
+    <div><input type="text" name="password">Mot de passe : </div>
+    <div><input type="text" name="confirmPassword">Confirmation : </div>
+    <div><input type="text" name="campus" value="{{ app.user.campus }}">Campus </div>
+    <div><button name="downloadPicture">Ma photo : </button></div>
+
+{% endblock %}
+
+{% block title %}
+    {{ app.user.name }} | {{ app.user.lastname }}
+{% endblock %}
+
