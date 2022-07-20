@@ -47,12 +47,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Hangout::class, inversedBy: 'hangouts')]
     private Collection $hangout;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(inversedBy: 'users' )]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
 
     #[ORM\OneToMany(mappedBy: 'organizer', targetEntity: Hangout::class, orphanRemoval: true)]
     private Collection $hangouts;
+
+    #[ORM\Column(length: 60,nullable: true)]
+    private ?string $pseudo = null;
 
     public function __construct()
     {
@@ -239,6 +242,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getHangouts(): Collection
     {
         return $this->hangouts;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
     }
 
 }
