@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HangoutController!{% endblock %}
+
+{% block main%}
+        <div class="container" >
+            {% for hangout in hangouts %}
+                <article >
+                    <a href="{{ path('app_hangout_edit', {id: hangout.id}) }}" title="View this wish in details">{{ hangout.name }} </a>
+                </article>
+            {% endfor %}
+        </div>
+{% endblock %}
