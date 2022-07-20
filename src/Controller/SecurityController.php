@@ -49,6 +49,11 @@ class SecurityController extends AbstractController
         {
 
             $user = $form->getData();
+            if($form->get('plainPassword') != '')
+            {
+                $hashedPassword = $passwordHasher->hashPassword($user,$form->get('plainPassword')->getData());
+                $user->setPassword($hashedPassword);
+            }
             $entityManager->persist($user);
             $entityManager->flush();
         }
