@@ -8,7 +8,7 @@
     <div><input type="text" name="email" value="{{ app.user.email }}">Emaill : </div>
     <div><input type="text" name="password">Mot de passe : </div>
     <div><input type="text" name="confirmPassword">Confirmation : </div>
-    <div><input type="text" name="campus" value="{{ app.user.campus }}">Campus </div>
+    <div><input type="text" name="campus" value="{{ app.user.campus.name }}">Campus </div>
     <div><button name="downloadPicture">Ma photo : </button></div>
 
 {% endblock %}

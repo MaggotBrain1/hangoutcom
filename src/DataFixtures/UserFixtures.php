@@ -40,7 +40,7 @@ class UserFixtures extends Fixture
             $user->setRoles(['ROLE_USER']);
             $user->setEmail($this->faker->email());
             $user->setIsActive(1);
-            $user->setPassword('aaaaaa');
+            $user->setPassword();
             $user->setCampus($this->getCampus());
             $manager->persist($user);
         }
