@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Form\EditProfileType;
 use App\Repository\UserRepository;
+use Cassandra\Type\UserType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -33,15 +37,30 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/profile/{id}', name: 'app_profile')]
-    public function profile( int $id, UserRepository $userRepository): Response
+    public function profile( int $id, UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
         if(!$user){
             throw $this->createNotFoundException("Oh no !!");
         }
+        $form = $this->createForm(EditProfileType::class,$user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            if( $form->get('confirmationPassword') === '' && $form->get('password') === $user->getPassword()) {
 
-        return $this->render("user/profile.html.twig",
-            ['user' => $user
+            }
+            else if((($form->get('confirmationPassword') !== $form->get('password')) && $form->get('confirmationPassword') !== '') ){
+                throw $this->createNotFoundException("Passwords must be equals");
+            }
+
+            $user = $form->getData();
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        return $this->renderForm("user/profile.html.twig",
+            ['user' => $user,'editUserForm'=>$form
             ]);
     }
 }

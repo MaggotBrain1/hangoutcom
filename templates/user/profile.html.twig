@@ -2,14 +2,16 @@
 
 {% block body %}
     <h1>Mon profil</h1>
-    <div><input type="text" name="name" value="{{ app.user.name }}">Prénom : </div>
-    <div><input type="text" name="lastname" value="{{ app.user.lastName }}">Nom : </div>
-    <div><input type="text" name="phone" value="{{ app.user.phone }}">Téléphone : </div>
-    <div><input type="text" name="email" value="{{ app.user.email }}">Emaill : </div>
-    <div><input type="text" name="password">Mot de passe : </div>
-    <div><input type="text" name="confirmPassword">Confirmation : </div>
-    <div><input type="text" name="campus" value="{{ app.user.campus.name }}">Campus </div>
-    <div><button name="downloadPicture">Ma photo : </button></div>
+ {{ form_start(editUserForm) }}
+    {{ form_row(editUserForm.pseudo) }}
+    {{ form_row(editUserForm.name) }}
+    {{ form_row(editUserForm.lastName) }}
+    {{ form_row(editUserForm.phone) }}
+    {{ form_row(editUserForm.email) }}
+    {{ form_row(editUserForm.plainPassword) }}
+    {{ form_row(editUserForm.campus) }}
+    <button type="submit">Enregistrer</button>
+    {{ form_end(editUserForm) }}
 
 {% endblock %}
 

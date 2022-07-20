@@ -54,6 +54,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'organizer', targetEntity: Hangout::class, orphanRemoval: true)]
     private Collection $hangouts;
 
+    #[ORM\Column(length: 60,nullable: true)]
+    private ?string $pseudo = null;
+
     public function __construct()
     {
         $this->hangout = new ArrayCollection();
@@ -239,6 +242,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getHangouts(): Collection
     {
         return $this->hangouts;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
     }
 
 }
