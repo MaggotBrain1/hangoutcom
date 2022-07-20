@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Form\EditProfileType;
 use App\Repository\UserRepository;
+use Cassandra\Type\UserType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -31,17 +36,25 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/profile/{id}', name: 'app_profile')]
-    public function profile(int $id, UserRepository $userRepository): Response
+    #[Route(path: '/profile', name: 'app_profile')]
+    public function profile(  UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     {
-        $user = $userRepository->find($id);
-
+        $user = $this->getUser();
         if(!$user){
             throw $this->createNotFoundException("Oh no !!");
         }
+        $form = $this->createForm(EditProfileType::class,$user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
 
-        return $this->render("user/profile.html.twig",
-            ["user" => $user
+            $user = $form->getData();
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+
+        return $this->renderForm("user/profile.html.twig",
+            ['user' => $user,'editUserForm'=>$form
             ]);
     }
 }
