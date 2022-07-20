@@ -2,6 +2,7 @@
     <ul>
         <li><a href="{{ path("app_home") }}" title="Home">Home</a></li>
         {% if app.user %}
+            <li><a href="{{ path("app_profile") }}" title="Profile">Profile</a></li>
             <li><a href="{{ path("app_logout") }}" title="Home">Logout</a></li>
         {% else %}
             <li><a href="{{ path("app_login") }}" title="Login">Login</a></li>
