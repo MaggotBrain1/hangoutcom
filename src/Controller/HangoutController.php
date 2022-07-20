@@ -37,6 +37,8 @@ class HangoutController extends AbstractController
         $hangoutForm->handleRequest($request);
 
         if($hangoutForm->isSubmitted() && $hangoutForm->isSubmitted()){
+            $hangout->setStartTime($hangoutForm["startTime"]->getData());
+            $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
             $hangout->setStatus($statusRepository->find(1));
             $em->persist($hangout);
             $em->flush();
