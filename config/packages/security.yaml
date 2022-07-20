@@ -40,7 +40,8 @@ security:
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }
-    - {path: ^/hangout/create, roles: ROLE_USER}
+    - {path: ^/hangout/create, roles: ROLE_USER }
+    - {path: ^/register, roles: ROLE_ADMIN }
 
 when@test:
   security:
