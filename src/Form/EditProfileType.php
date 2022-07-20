@@ -30,10 +30,6 @@ class EditProfileType extends AbstractType
                     'required'=>false,
                     'first_options'=>['attr'=>['autocomplete'=>'password'],'label'=>'password'],
                     'mapped'=>false,
-                    'constraints'=>[
-                new NotBlank(['message'=>'Vous devez saisir votre mot de passe pour valider les modifications']),
-
-            ],
                     'second_options'=>['attr'=>['autocomplete'=>'confirmation password'],'label'=>'confirmation password'],
             ])
             ->add('campus',EntityType::class,['class'=>Campus::class,'choice_label'=>'name'])

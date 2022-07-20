@@ -36,8 +36,8 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/profile/{id}', name: 'app_profile')]
-    public function profile( int $id, UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
+    #[Route(path: '/profile', name: 'app_profile')]
+    public function profile(  UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
         if(!$user){
@@ -47,12 +47,6 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            if( $form->get('confirmationPassword') === '' && $form->get('password') === $user->getPassword()) {
-
-            }
-            else if((($form->get('confirmationPassword') !== $form->get('password')) && $form->get('confirmationPassword') !== '') ){
-                throw $this->createNotFoundException("Passwords must be equals");
-            }
 
             $user = $form->getData();
             $entityManager->persist($user);
