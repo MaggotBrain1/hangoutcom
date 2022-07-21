@@ -6,7 +6,9 @@
             <div class="navbar-nav">
                 {% if app.user %}
                     <a class="nav-link active" href="{{ path("app_profile",{'id' : app.user.id}) }}" title="Profile">Profile</a>
+{#
                     <a class="nav-link active" href="{{ path("app_hangout_list") }}" title="Create">View Hangouts</a>
+#}
                     <a class="nav-link active" href="{{ path("app_hangout_create",{'id' : app.user.id}) }}" title="Create">Create
                             Hangout</a></li>
                     <a class="nav-link active" href="{{ path("app_logout") }}" title="Home">Logout</a>
