@@ -44,12 +44,18 @@ class HangoutRepository extends ServiceEntityRepository
             ->orderBy('h.startTime', 'ASC');
         if($campus){
             $queryFilter->andWhere('h.campusOrganizerSite =:campus')
-                        ->setParameter('campus', $campus);
+                ->setParameter('campus', $campus);
+        }
+        if($name){
+            $queryFilter->andWhere('h.name LIKE :name')
+                ->setParameter('name', '%'.$name.'%');
         }
 
         $res = $queryFilter->getQuery();
         return $res->getResult();
     }
+
+
 
 //    /**
 //     * @return Hangout[] Returns an array of Hangout objects
