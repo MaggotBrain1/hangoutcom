@@ -64,4 +64,22 @@ class SecurityController extends AbstractController
             ['user' => $user,'editUserForm'=>$form
             ]);
     }
+    #[Route(path: '/user/{id}', name: 'app_user')]
+public function profileUsers(int $id,UserRepository $userRepository)
+    {
+        $user = $userRepository->find($id);
+        $thisUser = $this->getUser();
+        if($user!= null)
+        {
+            if($user === $thisUser)
+            {
+                return $this->redirectToRoute('app_profile');
+            }
+        }
+        else{
+            throw $this->createNotFoundException("utilisateur introuvable");
+        }
+        return $this->render("otherUser/profile.html.twig",
+        ['user'=>$user]);
+    }
 }

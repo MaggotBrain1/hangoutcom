@@ -44,7 +44,7 @@
                                 {% else %}
                                   <td></td>
                                 {% endif %}
-                                <td>{{ app.user.name }}</td>
+                                <td><a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">{{ hangout.organizer.pseudo }}</a></td>
                                 <td>
                                     {% if app.user %}
                                     <a href="{{ path('app_hangout_detail', {id: hangout.id}) }}" title="hangout  details">Afficher</a>
