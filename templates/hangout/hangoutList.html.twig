@@ -44,17 +44,23 @@
                                 {% else %}
                                   <td></td>
                                 {% endif %}
-                                <td>{{ app.user.name }}</td>
+                                <td><a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">{{ hangout.organizer.pseudo }}</a></td>
                                 <td>
-                                    {% if app.user %}
-                                    <a href="{{ path('app_hangout_detail', {id: hangout.id}) }}" title="hangout  details">Afficher</a>
-                                        {% if hangout.organizer.id == app.user.id %}
-                                       - <a href="{{ path('app_hangout_delete', {id: hangout.id}) }}" title="delete hangout">Annuler</a>
-                                        {% endif %}
-                                        {% if app.user in hangout.hangouts  %}
-                                          -  <a href="{{ path('app_hangout_edit', {id: hangout.id}) }}" title="withdraw">Se désister</a>
-                                        {% endif %}
+                                    {% if app.user and hangout.organizer.id != app.user.id   %}
+                                        <a href="{{ path('app_hangout_detail', {id: hangout.id}) }}" title="hangout  details">Afficher</a>
+                                        {% else %}
+                                    <a href="{{ path('app_hangout_edit', {id: hangout.id}) }}" title="hangout  details">Modifier</a>
                                     {% endif %}
+                                        {% if hangout.organizer.id == app.user.id %}
+                                       - <a href="{{ path('app_hangout_delete', {'id': hangout.id}) }}" title="delete hangout">Annuler</a>
+                                        {% endif %}
+                                        {% if app.user in hangout.hangouts and app.user != hangout.organizer  %}
+                                          -  <a href="{{ path('app_hangout_withdraw', {'HangoutId': hangout.id}) }}" title="withdraw">Se désister</a>
+                                        {% endif %}
+                                        {% if app.user not in hangout.hangouts and hangout.organizer.id != app.user.id  %}
+                                            -  <a href="{{ path('app_hangout_register',{'HangoutId': hangout.id}) }}" title="register" >S'inscrire</a>
+                                        {% endif %}
+
                                 </td>
 
                             </tr>

@@ -6,6 +6,7 @@ use App\Entity\Hangout;
 use App\Entity\User;
 use App\Form\FilterType;
 use App\Repository\HangoutRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(HangoutRepository $hangoutRepository, Request $request): Response
+    public function index(HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         if($user == null)
@@ -47,6 +48,7 @@ class HomeController extends AbstractController
         return $this->render('hangout/hangoutList.html.twig', [
             'hangouts' => $hangouts,
             'filterForm' => $filterForm->createView(),
+            'subscribe'=>$hangoutRepository,
         ]);
     }
 }
