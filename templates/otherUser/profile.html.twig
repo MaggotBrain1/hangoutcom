@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
+    <img src="{{ asset('photos/'~user.image)}}" alt="Photo de profil">
     <div>
         <h2>{{ user.pseudo }}</h2>
     </div>
