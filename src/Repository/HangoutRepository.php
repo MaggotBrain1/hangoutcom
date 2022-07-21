@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Hangout;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -54,6 +56,7 @@ class HangoutRepository extends ServiceEntityRepository
         $res = $queryFilter->getQuery();
         return $res->getResult();
     }
+
 
 
 
