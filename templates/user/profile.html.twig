@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
+    <img src="{{ asset('photos/'~app.user.image)}}" alt="Photo de profil">
     <h1>Mon profil</h1>
  {{ form_start(editUserForm) }}
     {{ form_row(editUserForm.pseudo) }}
@@ -10,6 +11,12 @@
     {{ form_row(editUserForm.email) }}
     {{ form_row(editUserForm.plainPassword) }}
     {{ form_row(editUserForm.campus) }}
+    {% if app.user.image == null %}
+        {{ form_label(editUserForm.image) }}
+    {% else %}
+    {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
+    {% endif %}
+    {{ form_widget(editUserForm.image) }}
     <button type="submit">Enregistrer</button>
     {{ form_end(editUserForm) }}
 
