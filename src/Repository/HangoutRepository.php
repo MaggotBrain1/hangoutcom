@@ -39,6 +39,17 @@ class HangoutRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByFilter($campus, $name, $startDate, $endDate, $imOrginizer, $imIn, $imNotIn, $pastHangout){
+        $queryFilter = $this->createQueryBuilder('h')
+            ->orderBy('h.startTime', 'ASC');
+        if($campus){
+            $queryFilter->andWhere('h.campusOrganizerSite =:campus')
+                        ->setParameter('campus', $campus);
+        }
+
+        $res = $queryFilter->getQuery();
+        return $res->getResult();
+    }
 
 //    /**
 //     * @return Hangout[] Returns an array of Hangout objects
