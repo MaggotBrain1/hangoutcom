@@ -27,14 +27,18 @@ class EditProfileType extends AbstractType
             ->add('lastName')
             ->add('phone')
             ->add('email')
-            ->add('plainPassword',RepeatedType::class,
+            ->add('password',PasswordType::class)
+            ->add('confirm',PasswordType::class,
+                ['mapped'=>false],
+                )
+            /*->add('plainPassword',RepeatedType::class,
                 [
                     'type'=>PasswordType::class,
                     'required'=>false,
-                    'first_options'=>['attr'=>['autocomplete'=>'password'],'label'=>'password'],
+                    'first_options'=>['attr'=>['autocomplete'=>'password'],'label_attr'=>['style'=>'display:none']],
                     'mapped'=>false,
-                    'second_options'=>['attr'=>['autocomplete'=>'confirmation password'],'label'=>'confirmation password'],
-            ])
+                    'second_options'=>['attr'=>['autocomplete'=>'confirmation password'],'label_attr'=>['style'=>'display:none']],
+            ])*/
             ->add('campus',EntityType::class,['class'=>Campus::class,'choice_label'=>'name'])
             ->add('image',FileType::class,['required'=>false,'label'=>'ajouter une photo de profil :','mapped'=>false,
                 'constraints'=>[new File(['maxSize'=>'4096k',
