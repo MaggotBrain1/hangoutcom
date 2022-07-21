@@ -2,7 +2,17 @@
 
 {% block main %}
 
+    
+
+
+
+
     {{ form_start(editUserForm) }}
+    {% if app.user.image != null %}
+    <img src="{{ asset('photos/'~app.user.image)}}" alt="Photo de profil" height="200">
+    {% else %}
+        <img src="{{ asset('photos/user-default.png')}}" alt="Photo de profil" height="96">
+    {% endif %}
     <div class="container text-center">
         <h1>Mon profil</h1>
     </div>
@@ -46,7 +56,16 @@
             <div class="col-6">{{ form_label(editUserForm.campus) }} :</div>
             <div class="col-6">{{ form(editUserForm.campus) }}</div>
         </div>
+        <div class="row">
+            {% if app.user.image == null %}
+        {{ form_label(editUserForm.image) }}
+    {% else %}
+    {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
+    {% endif %}
+    {{ form_widget(editUserForm.image) }}
+    </div>
         <div class="text-center">
+
     <button type="submit">Enregistrer</button>
         </div>
     </div>

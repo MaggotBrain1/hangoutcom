@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <img src="{{ asset('photos/'~user.image)}}" alt="Photo de profil">
+    <div>
+        <h2>{{ user.pseudo }}</h2>
+    </div>
+    <div>
+        <label for="name">Prénom :</label>
+        <h3 id="name">{{ user.name }}</h3>
+    </div>
+    <div>
+        <label for="lastname">Nom :</label>
+        <h3 id="lastname">{{ user.lastName }}</h3>
+    </div>
+    <div>
+        <label for="phone">Téléphone :</label>
+        <h3 id="phone">{{ user.phone }}</h3>
+    </div>
+    <div>
+        <label for="email">Email :</label>
+        <h3 id="email">{{ user.email }}</h3>
+    </div>
+    <div>
+        <label for="campus">Campus :</label>
+        <h3 id="campus">{{ user.name }}</h3>
+    </div>
+{% endblock %}
