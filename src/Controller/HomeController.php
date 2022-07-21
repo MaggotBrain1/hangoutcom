@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Hangout;
+use App\Entity\User;
 use App\Form\FilterType;
 use App\Repository\HangoutRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +18,12 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(HangoutRepository $hangoutRepository, Request $request): Response
     {
+        $user = $this->getUser();
+        if($user == null)
+        {
+            $this->addFlash('fail','Vous devez être connecté pour voir les sorties!');
+            return $this->redirectToRoute('app_login');
+        }
         $hangout = new Hangout();
         $filterForm = $this->createForm(FilterType::class,$hangout);
 
