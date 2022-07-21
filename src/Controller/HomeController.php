@@ -22,7 +22,7 @@ class HomeController extends AbstractController
 
         if($filterForm->isSubmitted() && $filterForm->isValid()){
             $campus = $filterForm["campusOrganizerSite"]->getData();
-            $name = null;
+            $name = $filterForm["name"]->getData();
             $startDate = null;
             $endDate= null;
             $imOrginizer= null;

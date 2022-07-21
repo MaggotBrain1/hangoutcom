@@ -42,6 +42,8 @@ security:
     - { path: ^/profile, roles: ROLE_USER }
     - {path: ^/hangout/create, roles: ROLE_USER }
     - {path: ^/register, roles: ROLE_ADMIN }
+    - {path: ^/hangouts, roles: ROLE_USER}
+
 
 when@test:
   security:

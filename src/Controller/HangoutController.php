@@ -38,7 +38,7 @@ class HangoutController extends AbstractController
         $hangoutForm = $this->createForm(HangoutFormType::class, $hangout,['defaultCampus'=>$campusOrganizerSite]);
         $hangoutForm->handleRequest($request);
 
-        if($hangoutForm->isSubmitted() && $hangoutForm->isSubmitted()){
+        if($hangoutForm->isSubmitted() && $hangoutForm->isValid()){
             $hangout->setStartTime($hangoutForm["startTime"]->getData());
             $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
             $hangout->setStatus($statusRepository->find(1));
