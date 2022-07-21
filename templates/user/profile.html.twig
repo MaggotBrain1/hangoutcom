@@ -8,7 +8,11 @@
 
 
     {{ form_start(editUserForm) }}
-    <img src="{{ asset('photos/'~app.user.image)}}" alt="Photo de profil">
+    {% if app.user.image != null %}
+    <img src="{{ asset('photos/'~app.user.image)}}" alt="Photo de profil" height="200">
+    {% else %}
+        <img src="{{ asset('photos/user-default.png')}}" alt="Photo de profil" height="96">
+    {% endif %}
     <div class="container text-center">
         <h1>Mon profil</h1>
     </div>
