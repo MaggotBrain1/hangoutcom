@@ -28,21 +28,21 @@
     <div class="row">
         <div class="col-6">{{ form_label(editUserForm.email) }} :</div>
         <div class="col-6">{{ form(editUserForm.email) }}</div>
-    <div class="row">
-        <div class="col-6">{{ form_label(editUserForm.password) }} :</div>
-        <div class="col-6">{{ form(editUserForm.password) }}</div>
+    <div class="row no-gutters">
+        <div class="col-6">{{ form_label(editUserForm.plainPassword) }} :</div>
+        <div class="col-6">{{ form(editUserForm.plainPassword) }}</div>
     </div>
-        <div class="row">
+       {# <div class="row no-gutters">
             <div class="col-6">{{ form_label(editUserForm.confirm) }} :</div>
             <div class="col-6">{{ form(editUserForm.confirm) }}</div>
-        </div>
+        </div>#}
     <div class="row">
         <div class="col-6">{{ form_label(editUserForm.campus) }} :</div>
         <div class="col-6">{{ form(editUserForm.campus) }}</div>
     </div>
     </div>
             <button type="submit">Enregistrer</button>
-
+</div>
 
             {{ form_end(editUserForm) }}
 

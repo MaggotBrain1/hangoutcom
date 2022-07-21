@@ -28,9 +28,9 @@ class EditProfileType extends AbstractType
                 [
                     'type'=>PasswordType::class,
                     'required'=>false,
-                    'first_options'=>['attr'=>['autocomplete'=>'password'],'label'=>'password'],
+                    'first_options'=>['attr'=>['autocomplete'=>'password'],'label'=>'Password'],
                     'mapped'=>false,
-                    'second_options'=>['attr'=>['autocomplete'=>'confirmation password'],'label'=>'confirmation password'],
+                    'second_options'=>['attr'=>['autocomplete'=>'confirmation password'],'label'=>'Confirm'],
             ])
             ->add('campus',EntityType::class,['class'=>Campus::class,'choice_label'=>'name'])
         ;
