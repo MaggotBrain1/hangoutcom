@@ -14,13 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HangoutController extends AbstractController
 {
-    #[Route('/hangouts', name: 'app_hangout_list', methods: ['GET'])]
-    public function list(HangoutRepository $hangoutRepository): Response
+    #[Route('/hangout/detail{id}', name: 'app_hangout_detail',methods: ['GET','POST'])]
+    public function detail(HangoutRepository $hangoutRepository, int $id): Response
     {
-       $hangouts = $hangoutRepository->findAll();
-
-        return $this->render('hangout/hangoutList.html.twig', [
-            'hangouts' => $hangouts,
+        $hangout = $hangoutRepository->find($id);
+        //TODO getHangouts retourne une collection qui contient la liste des user inscrit à la sortie
+        $listUsersInHangout = $hangout->getHangouts();
+        return $this->render('hangout/detailHangout.html.twig', [
+            'hangout' =>$hangout,
+            'listUsersInHangout' =>$listUsersInHangout
         ]);
     }
 

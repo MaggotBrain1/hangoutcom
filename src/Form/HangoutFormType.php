@@ -14,9 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -42,11 +39,11 @@ class HangoutFormType extends AbstractType
                 'constraints' => [
                     new GreaterThanOrEqual([
                         'value' => 'today',
-                        'message' => 'La date ne peut être antérieur ni égale  à la date du jour !'
+                        'message' => 'La date doit être supérieure ou égale à la date du jour !'
                     ]),
                     new GreaterThan([
                         'propertyPath' => 'parent.all[registerDateLimit].data',
-                        'message' => 'Cette valeur doit être supérieure à la date limite d\'inscription !'
+                        'message' => 'La date doit être supérieure à la date limite d\'inscription !'
                     ])
                 ],
                 'placeholder' => [
@@ -64,7 +61,7 @@ class HangoutFormType extends AbstractType
                 'constraints' => [
                     new GreaterThanOrEqual([
                         'value' => 'today',
-                        'message' => 'Cette valeur doit être supérieure ou égale à la date du jour !'
+                        'message' => 'La date doit être supérieure ou égale à la date du jour !'
                     ])
                 ],
                 'placeholder' => [
