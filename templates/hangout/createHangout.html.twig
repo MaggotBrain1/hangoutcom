@@ -60,9 +60,9 @@
               {#  <a href="{{ path('app_hangout_publish', {id: hangout.id}) }}" id="surCoucheBtn" type="submit" class="btn btn-primary" >
                     Publier la sortie
                 </a>#}
-                <button id="surCoucheBtn" type="submit" class="btn btn-primary"> Publier la sortie</button>
+                <button id="surCoucheBtn" name="submit" value="published" type="submit" class="btn btn-primary"> Publier la sortie</button>
 
-                <button id="surCoucheBtn"   type="submit" class="btn btn-primary">Annuler</button>
+                <button id="surCoucheBtn" type="submit" class="btn btn-primary">Annuler</button>
             </div>
                   {{ form_end(form) }}
 

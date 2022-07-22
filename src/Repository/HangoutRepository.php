@@ -41,7 +41,7 @@ class HangoutRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByFilter($campus, $name, $startDate, $endDate, $imOrginizer, $imIn, $imNotIn, $pastHangout){
+    public function findByFilter($campus, $name, $startDate, $endDate, $imOrginizer, $imIn, $imNotIn, $pastHangout,$user){
         $queryFilter = $this->createQueryBuilder('h')
             ->orderBy('h.startTime', 'ASC');
         if($campus){
@@ -51,6 +51,33 @@ class HangoutRepository extends ServiceEntityRepository
         if($name){
             $queryFilter->andWhere('h.name LIKE :name')
                 ->setParameter('name', '%'.$name.'%');
+        }
+        if($startDate && $endDate) {
+            $queryFilter->andWhere('h.startTime BETWEEN :startDate AND :endDate')
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
+        }
+        if($imOrginizer) {
+            $queryFilter->andWhere('h.organizer  =:user')
+                ->setParameter('user', $user);
+        }
+        if ($imIn and !$imNotIn) {
+            $queryFilter->innerJoin('h.hangouts', 'sub')
+                ->andWhere('sub = :user')
+                ->setParameter('user', $user);
+        }
+
+        //TODO QUENTIN gerer la requete dans le cas ou notre USER n'est pas inscrit à une sortie
+     /*   if ($imNotIn and !$imIn) {
+            $queryFilter->innerJoin('h.hangouts', 'sub')
+                ->andWhere('sub = :user')
+                ->setParameter('user', $user);
+        }*/
+
+        if ($pastHangout) {
+            $today = new \DateTime();
+            $queryFilter->andWhere('h.startTime >= :today ')
+                ->setParameter('today', $today);
         }
 
         $res = $queryFilter->getQuery();
