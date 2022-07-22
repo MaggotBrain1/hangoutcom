@@ -22,7 +22,7 @@
                     <thead class="sticky-top bg-white">
                     <tr>
                         <th scope="col" class="noBorder">Nom de la sortie</th>
-                        <th scope="col">Date de la sortie</th>
+                        <th scope="col" >Date de la sortie</th>
                         <th scope="col">Clôture</th>
                         <th scope="col">inscriptions/places</th>
                         <th scope="col">Etat</th>
@@ -35,7 +35,7 @@
                         {% for hangout in hangouts %}
                             <tr>
                                 <th scope="row"  class="noBorder">{{ hangout.name }}</th>
-                                <td >{{ hangout.startTime |date('Y-m-d H:i') }}</td>
+                                <td>{{ hangout.startTime |date('Y-m-d H:i') }}</td>
                                 <td>{{ hangout.registerDateLimit |date('Y-m-d')  }}</td>
                                 <td>{{ hangout.hangouts|length}}/{{ hangout.MaxOfRegistration}}</td>
                                 <td>{{ hangout.status.label }}</td>
@@ -65,6 +65,6 @@
                     </tbody>
                 </table>
         </div>
-    <a class="newHang" href="{{ path('app_hangout_create') }}" title="create a new hangout">Créer une sortie <i class="fa-solid fa-calendar-plus"></i></a>
+    <a class="newHang" href="{{ path('app_hangout_create') }}" title="create a new hangout">Créer une sortie <i class="fa-solid fa-calendar-plus fa-lg"></i></a>
 
 {% endblock %}

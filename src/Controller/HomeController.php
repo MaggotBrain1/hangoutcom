@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Hangout;
 use App\Form\FilterType;
 use App\Repository\HangoutRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,17 +13,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home',)]
     public function index(HangoutRepository $hangoutRepository, Request $request): Response
     {
         $hangout = new Hangout();
         $filterForm = $this->createForm(FilterType::class,$hangout);
 
         $filterForm->handleRequest($request);
+        //TODO gerer le cas ou le filtre est enclenché car on accede plus au détail
 
         if($filterForm->isSubmitted() && $filterForm->isValid()){
             $campus = $filterForm["campusOrganizerSite"]->getData();
-            $name = null;
+            $name = $filterForm["name"]->getData();
             $startDate = null;
             $endDate= null;
             $imOrginizer= null;
@@ -30,6 +32,7 @@ class HomeController extends AbstractController
             $imNotIn= null;
             $pastHangout= null;
             $hangouts = $hangoutRepository->findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout);
+
         }else{
             $hangouts = $hangoutRepository->findAll();
 

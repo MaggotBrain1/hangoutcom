@@ -19,7 +19,11 @@ class HangoutController extends AbstractController
     {
         $hangout = $hangoutRepository->find($id);
         //TODO getHangouts retourne une collection qui contient la liste des user inscrit à la sortie
-        $listUsersInHangout = $hangout->getHangouts();
+        if($hangout){
+            $listUsersInHangout = $hangout->getHangouts();
+        }else{
+            $listUsersInHangout = ['Aucun participant inscrit'];
+        }
         return $this->render('hangout/detailHangout.html.twig', [
             'hangout' =>$hangout,
             'listUsersInHangout' =>$listUsersInHangout
@@ -38,7 +42,7 @@ class HangoutController extends AbstractController
         $hangoutForm = $this->createForm(HangoutFormType::class, $hangout,['defaultCampus'=>$campusOrganizerSite]);
         $hangoutForm->handleRequest($request);
 
-        if($hangoutForm->isSubmitted() && $hangoutForm->isSubmitted()){
+        if($hangoutForm->isSubmitted() && $hangoutForm->isValid()){
             $hangout->setStartTime($hangoutForm["startTime"]->getData());
             $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
             $hangout->setStatus($statusRepository->find(1));

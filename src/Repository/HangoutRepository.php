@@ -46,6 +46,10 @@ class HangoutRepository extends ServiceEntityRepository
             $queryFilter->andWhere('h.campusOrganizerSite =:campus')
                         ->setParameter('campus', $campus);
         }
+        if($name) {
+            $queryFilter->andWhere('h.name LIKE :name ')
+                ->setParameter('name', '%'.$name.'%');
+        }
 
         $res = $queryFilter->getQuery();
         return $res->getResult();
