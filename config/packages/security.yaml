@@ -38,10 +38,13 @@ security:
   role_hierarchy:
       ROLE_ADMIN: ROLE_USER
   access_control:
-    - { path: ^/admin, roles: ROLE_ADMIN }
+
     - { path: ^/profile, roles: ROLE_USER }
     - {path: ^/hangout/create, roles: ROLE_USER }
+    - {path: ^/hangouts, roles: ROLE_USER}
     - {path: ^/register, roles: ROLE_ADMIN }
+    - { path: ^/admin, roles: ROLE_ADMIN }
+
 
 when@test:
   security:

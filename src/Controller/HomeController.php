@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Hangout;
+use App\Entity\User;
 use App\Form\FilterType;
 use App\Repository\HangoutRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,14 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home',)]
-    public function index(HangoutRepository $hangoutRepository, Request $request): Response
+    #[Route('/', name: 'app_home')]
+    public function index(HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if($user == null)
+        {
+            $this->addFlash('fail','Vous devez être connecté pour voir les sorties!');
+            return $this->redirectToRoute('app_login');
+        }
         $hangout = new Hangout();
         $filterForm = $this->createForm(FilterType::class,$hangout);
 
         $filterForm->handleRequest($request);
-        //TODO gerer le cas ou le filtre est enclenché car on accede plus au détail
 
         if($filterForm->isSubmitted() && $filterForm->isValid()){
             $campus = $filterForm["campusOrganizerSite"]->getData();
@@ -32,7 +40,6 @@ class HomeController extends AbstractController
             $imNotIn= null;
             $pastHangout= null;
             $hangouts = $hangoutRepository->findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout);
-
         }else{
             $hangouts = $hangoutRepository->findAll();
 
@@ -41,6 +48,7 @@ class HomeController extends AbstractController
         return $this->render('hangout/hangoutList.html.twig', [
             'hangouts' => $hangouts,
             'filterForm' => $filterForm->createView(),
+            'subscribe'=>$hangoutRepository,
         ]);
     }
 }

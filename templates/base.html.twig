@@ -28,11 +28,22 @@
     {% endblock %}
 </head>
 <body>
+
 <header>
-    <h1>Sortir.com</h1>
     {% include("nav/nav.html.twig") %}
 </header>
+<div>
+    <span>
+{# read and display all flash messages #}
+{% for  message in app.flashes('fail') %}
 
+        <div class="flash-fail">
+            {{ message }}
+        </div>
+
+{% endfor %}
+        </span>
+</div>
 
 <main>
     {% block main %}{% endblock %}

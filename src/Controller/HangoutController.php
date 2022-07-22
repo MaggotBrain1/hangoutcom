@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Hangout;
+use App\Entity\User;
 use App\Form\HangoutFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\StatusRepository;
@@ -48,6 +49,8 @@ class HangoutController extends AbstractController
             $hangout->setStatus($statusRepository->find(1));
             $em->persist($hangout);
             $em->flush();
+            $hangoutId = $hangout->getId();
+            $this->registerToHangout($hangoutId,$em);
             $this->addFlash('success', 'Hangout successfully added .');
         }
 
@@ -90,7 +93,7 @@ class HangoutController extends AbstractController
         ]);
     }
 
-    #[Route('/hangout/delete{id}', name: 'app_hangout_delete' ,methods: ['GET','DELETE'])]
+    #[Route('/hangout/delete/{id}', name: 'app_hangout_delete' ,methods: ['GET','DELETE'])]
     public function delete(EntityManagerInterface $em, int $id): Response
     {
         $hangout = $em->getRepository(Hangout::class)->find($id);
@@ -104,9 +107,47 @@ class HangoutController extends AbstractController
             $em->flush();
         }
 
-        return $this->render('hangout/hangoutList.html.twig', [
+       /* return $this->renderForm('hangout/hangoutList.html.twig', [
             'controller_name' => 'HangoutController',
-        ]);
+        ]);*/
+        return $this->redirectToRoute('app_home');
     }
+    #[Route('/hangout/register/{HangoutId}', name: 'app_hangout_register' )]
+    public function registerToHangout( int $HangoutId,EntityManagerInterface $em): Response
+    {
+        $userId = $this->getUser()->getId();
+
+        $hangout = $em->getRepository(Hangout::class)->find($HangoutId);
+        $currentUser = $em->getRepository(User::class)->find($userId);
+        if (!$hangout) {
+            throw $this->createNotFoundException(
+                'No hangout found for id '.$HangoutId
+            );
+        }else{
+        $relation = $hangout->addHangout($currentUser);
+        $em->persist($relation);
+        $em->flush();
+
+        }
+        return $this->redirectToRoute('app_home');
+    }
+    #[Route('/hangout/unsubscribe/{HangoutId}', name: 'app_hangout_withdraw' )]
+    public function withdrawToHangout(EntityManagerInterface $em, int $HangoutId): Response
+    {
+        $hangout = $em->getRepository(Hangout::class)->find($HangoutId);
+        $userId = $this->getUser()->getId();
+        $currentUser = $em->getRepository(User::class)->find($userId);
+        if (!$hangout) {
+            throw $this->createNotFoundException(
+                'No hangout found for id '.$HangoutId
+            );
+        }else{
+            $relation = $hangout->removeHangout($currentUser);
+            $em ->persist($relation);
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_home');
+    }
+
 
 }
