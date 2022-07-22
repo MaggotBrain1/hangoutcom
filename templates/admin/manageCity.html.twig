@@ -18,11 +18,21 @@
     </thead>
     <tbody>
     {% for city in cities %}
-        <tr>
+    <tr>
             <td>{{ city.name }}</td>
             <td>{{ city.zipCode }}</td>
-        </tr>
+        <td><a href="#" class="text-decoration-none">Modifier</a> -
+            <a href="#" class="text-decoration-none">Supprimer</a></td>
+    </tr>
     {% endfor %}
+    {{ form_start(form_city) }}
+    <tr>
+        <td>{{ form_row(form_city.name ) }}</td>
+        <td>{{ form_row(form_city.zipCode) }}</td>
+        <td><button type="submit">Ajouter</button></td>
+
+    </tr>
+    {{ form_end(form_city) }}
     </tbody>
 
 </table>
