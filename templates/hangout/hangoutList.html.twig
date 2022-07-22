@@ -86,7 +86,7 @@
                                         {% if app.user in hangout.hangouts and app.user != hangout.organizer  %}
                                           -  <a href="{{ path('app_hangout_withdraw', {'HangoutId': hangout.id}) }}" title="withdraw">Se désister</a>
                                         {% endif %}
-                                        {% if app.user not in hangout.hangouts and hangout.organizer.id != app.user.id  %}
+                                        {% if app.user not in hangout.hangouts and hangout.organizer.id != app.user.id and hangout.hangouts|length < hangout.maxOfRegistration  %}
                                             -  <a href="{{ path('app_hangout_register',{'HangoutId': hangout.id}) }}" title="register" >S'inscrire</a>
                                         {% endif %}
                                 </td>
