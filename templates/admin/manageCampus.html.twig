@@ -10,16 +10,24 @@
     <input type="text" name="search" placeholder="HER">
     <button type="submit">Rechercher</button>
 
-    <tr>
-        <th id="campusName" scope="row" class="noBorder effetneon">Campus</th>
-        <th id="actions" scope="row" class="noBorder effetneon">Actions</th>
-    </tr><br>
-    {% for camp in campus %}
+    <table class="table">
+        <thead class="sticky-top">
         <tr>
-            <td>{{ camp.name }}</td>
-        </tr>
-        <tr>
-            <td></td>
+            <th id="campusName" scope="row" class="txtTh neonText">Campus</th>
+            <th id="actions" scope="row" class="txtTh neonText">Actions</th>
         </tr><br>
-    {% endfor %}
+        </thead>
+        <tbody>
+        {% for camp in campus %}
+            <tr>
+                <td>{{ camp.name }}</td>
+                <td></td>
+            </tr><br>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
 {% endblock %}
