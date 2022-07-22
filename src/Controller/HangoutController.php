@@ -69,6 +69,10 @@ class HangoutController extends AbstractController
     #[Route('/hangout/edit{id}', name: 'app_hangout_edit',  requirements: ['id' => '\d+'])]
     public function edit(EntityManagerInterface $em, int $id,Request $request,StatusRepository $statusRepository): Response
     {
+   /*     if($hangout->get)
+        {
+
+        }*/
         $hangout = $em->getRepository(Hangout::class)->find($id);
         $currentUser = $this->getUser();
         $campusOrganizerSite = $currentUser->getCampus();
@@ -81,7 +85,7 @@ class HangoutController extends AbstractController
         $hangoutForm = $this->createForm(HangoutFormType::class, $hangout,['defaultCampus'=>$campusOrganizerSite]);
         $hangoutForm->handleRequest($request);
 
-        if($hangoutForm->isSubmitted() && $hangoutForm->isSubmitted()){
+        if($hangoutForm->isSubmitted() && $hangoutForm->isValid()){
             if ($request->request->get('submit') === 'published'){
                 $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
             }elseif($request->request->get('submit') === 'cancel'){
@@ -130,7 +134,7 @@ class HangoutController extends AbstractController
             throw $this->createNotFoundException(
                 'No hangout found for id '.$HangoutId
             );
-        }else{
+        }else if($hangout->getHangouts()->count() < $hangout->getMaxOfRegistration()){
         $relation = $hangout->addHangout($currentUser);
         $em->persist($relation);
         $em->flush();
@@ -148,7 +152,7 @@ class HangoutController extends AbstractController
             throw $this->createNotFoundException(
                 'No hangout found for id '.$HangoutId
             );
-        }else{
+        }else if($hangout->getOrganizer() != $currentUser){
             $relation = $hangout->removeHangout($currentUser);
             $em ->persist($relation);
             $em->flush();
