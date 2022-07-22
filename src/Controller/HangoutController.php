@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Hangout;
+use App\Entity\Status;
 use App\Entity\User;
 use App\Form\HangoutFormType;
 use App\Repository\HangoutRepository;
@@ -20,7 +21,11 @@ class HangoutController extends AbstractController
     {
         $hangout = $hangoutRepository->find($id);
         //TODO getHangouts retourne une collection qui contient la liste des user inscrit à la sortie
-        $listUsersInHangout = $hangout->getHangouts();
+        if($hangout){
+            $listUsersInHangout = $hangout->getHangouts();
+        }else{
+            $listUsersInHangout = ['Aucun participant inscrit'];
+        }
         return $this->render('hangout/detailHangout.html.twig', [
             'hangout' =>$hangout,
             'listUsersInHangout' =>$listUsersInHangout
@@ -42,7 +47,13 @@ class HangoutController extends AbstractController
         if($hangoutForm->isSubmitted() && $hangoutForm->isValid()){
             $hangout->setStartTime($hangoutForm["startTime"]->getData());
             $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
-            $hangout->setStatus($statusRepository->find(1));
+
+            if ($request->request->get('submit') === 'published'){
+                $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
+            }else{
+                $hangout->setStatus($statusRepository->find(Status::STATUS_CREATED));
+            }
+
             $em->persist($hangout);
             $em->flush();
             $hangoutId = $hangout->getId();
@@ -55,16 +66,8 @@ class HangoutController extends AbstractController
         ]);
     }
 
-    #[Route('/hangout/publish{id}', name: 'app_hangout_publish',methods: ['GET','POST'])]
-    public function publish(): Response
-    {
-        return $this->render('hangout/hangoutList.html.twig', [
-            'controller_name' => 'HangoutController',
-        ]);
-    }
-
-    #[Route('/hangout/edit{id}', name: 'app_hangout_edit')]
-    public function edit(EntityManagerInterface $em, int $id,Request $request): Response
+    #[Route('/hangout/edit{id}', name: 'app_hangout_edit',  requirements: ['id' => '\d+'])]
+    public function edit(EntityManagerInterface $em, int $id,Request $request,StatusRepository $statusRepository): Response
     {
         $hangout = $em->getRepository(Hangout::class)->find($id);
         $currentUser = $this->getUser();
@@ -79,17 +82,25 @@ class HangoutController extends AbstractController
         $hangoutForm->handleRequest($request);
 
         if($hangoutForm->isSubmitted() && $hangoutForm->isSubmitted()){
+            if ($request->request->get('submit') === 'published'){
+                $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
+            }elseif($request->request->get('submit') === 'cancel'){
+                $hangout->setStatus($statusRepository->find(Status::STATUS_CANCELED));
+            }
             $em->persist($hangout);
             $em->flush();
             $this->addFlash('success', 'Hangout successfully updated .');
+
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('hangout/createHangout.html.twig', [
+        return $this->render('hangout/editHangout.html.twig', [
             'form' => $hangoutForm->createView(),
+            'thisIdHangout'=> $id
         ]);
     }
 
-    #[Route('/hangout/delete/{id}', name: 'app_hangout_delete' ,methods: ['GET','DELETE'])]
+    #[Route('/hangout/delete/{id}', name: 'app_hangout_delete', requirements: ['id' => '\d+'])]
     public function delete(EntityManagerInterface $em, int $id): Response
     {
         $hangout = $em->getRepository(Hangout::class)->find($id);
@@ -108,7 +119,7 @@ class HangoutController extends AbstractController
         ]);*/
         return $this->redirectToRoute('app_home');
     }
-    #[Route('/hangout/register/{HangoutId}', name: 'app_hangout_register' )]
+    #[Route('/hangout/register/{HangoutId}', name: 'app_hangout_register', requirements: ['HangoutId' => '\d+'] )]
     public function registerToHangout( int $HangoutId,EntityManagerInterface $em): Response
     {
         $userId = $this->getUser()->getId();
@@ -127,7 +138,7 @@ class HangoutController extends AbstractController
         }
         return $this->redirectToRoute('app_home');
     }
-    #[Route('/hangout/unsubscribe/{HangoutId}', name: 'app_hangout_withdraw' )]
+    #[Route('/hangout/unsubscribe/{HangoutId}', name: 'app_hangout_withdraw', requirements: ['HangoutId' => '\d+'])]
     public function withdrawToHangout(EntityManagerInterface $em, int $HangoutId): Response
     {
         $hangout = $em->getRepository(Hangout::class)->find($HangoutId);
@@ -142,6 +153,16 @@ class HangoutController extends AbstractController
             $em ->persist($relation);
             $em->flush();
         }
+        return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/hangout/cancel/{id}', name: 'app_hangout_cancel', requirements: ['id' => '\d+'])]
+    public function editStatus(EntityManagerInterface $em, HangoutRepository $hangoutRepository,StatusRepository $statusRepository, int $id): Response
+    {
+        $hangout = new Hangout();
+        $hangout = $hangoutRepository->find($id);
+        $hangout->setStatus($statusRepository->find(Status::STATUS_CANCELED));
+
         return $this->redirectToRoute('app_home');
     }
 
