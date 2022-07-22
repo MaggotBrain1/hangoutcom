@@ -63,6 +63,7 @@
                     <tbody>
                         {% for hangout in hangouts %}
                             <tr>
+                                {% if hangout.status.label  is not same as 'annulée' %}
                                 <th id="nameHang" scope="row"  class="noBorder effetneon">{{ hangout.name }}</th>
                                 <td>{{ hangout.startTime |date('Y-m-d H:i') }}</td>
                                 <td>{{ hangout.registerDateLimit |date('Y-m-d')  }}</td>
@@ -75,6 +76,7 @@
                                 {% endif %}
                                 <td><a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">{{ hangout.organizer.pseudo }}</a></td>
                                 <td>
+
                                     {% if app.user and hangout.organizer.id != app.user.id   %}
                                         <a href="{{ path('app_hangout_detail', {id: hangout.id}) }}" title="hangout  details">Afficher</a>
                                         {% else %}
@@ -83,12 +85,13 @@
                                         {% if hangout.organizer.id == app.user.id %}
                                        - <a href="{{ path('app_hangout_cancel', {'id': hangout.id}) }}" title="cancel hangout">Annuler</a>
                                         {% endif %}
-                                        {% if app.user in hangout.hangouts and app.user != hangout.organizer  %}
+                                        {% if app.user in hangout.hangouts and app.user != hangout.organizer and hangout.registerDateLimit > date()  %}
                                           -  <a href="{{ path('app_hangout_withdraw', {'HangoutId': hangout.id}) }}" title="withdraw">Se désister</a>
                                         {% endif %}
-                                        {% if app.user not in hangout.hangouts and hangout.organizer.id != app.user.id and hangout.hangouts|length < hangout.maxOfRegistration  %}
+                                        {% if app.user not in hangout.hangouts and hangout.organizer.id != app.user.id and hangout.hangouts|length < hangout.maxOfRegistration and hangout.registerDateLimit > date()   %}
                                             -  <a href="{{ path('app_hangout_register',{'HangoutId': hangout.id}) }}" title="register" >S'inscrire</a>
                                         {% endif %}
+                                    {% endif %}
                                 </td>
 
                             </tr>

@@ -53,6 +53,9 @@ class Hangout
     #[ORM\JoinColumn(nullable: false)]
     private ?Place $place = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reason = null;
+
     public function __construct()
     {
         $this->hangouts = new ArrayCollection();
@@ -206,6 +209,18 @@ class Hangout
     public function setPlace(?Place $place): self
     {
         $this->place = $place;
+
+        return $this;
+    }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(?string $reason): self
+    {
+        $this->reason = $reason;
 
         return $this;
     }
