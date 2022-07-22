@@ -33,13 +33,13 @@ class HomeController extends AbstractController
         if($filterForm->isSubmitted() && $filterForm->isValid()){
             $campus = $filterForm["campusOrganizerSite"]->getData();
             $name = $filterForm["name"]->getData();
-            $startDate = null;
-            $endDate= null;
-            $imOrginizer= null;
-            $imIn= null;
-            $imNotIn= null;
-            $pastHangout= null;
-            $hangouts = $hangoutRepository->findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout);
+            $startDate = $filterForm["startDate"]->getData();
+            $endDate= $filterForm["endDate"]->getData();
+            $imOrginizer= $filterForm["isOrganizer"]->getData();
+            $imIn= $filterForm["isSubscribe"]->getData();
+            $imNotIn= $filterForm["isNotSuscribe"]->getData();
+            $pastHangout= $filterForm["isHangoutPassed"]->getData();
+            $hangouts = $hangoutRepository->findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout,$user);
         }else{
             $hangouts = $hangoutRepository->findAll();
 

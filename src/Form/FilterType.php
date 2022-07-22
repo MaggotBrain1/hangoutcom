@@ -24,54 +24,59 @@ class FilterType extends AbstractType
                     return $repo->createQueryBuilder('c')
                         ->orderBy('c.name', 'ASC');
                 },
+                'label'=>false,
                 'choice_label' => 'name',
                 'required' => false,
-                'label' => 'Campus : ',
-                'attr' => ['class' => ''],
+                'placeholder' => '--Campus--',
+                'attr' => ['class' => 'inptFilter effetneon'],
             ])
             ->add('name', SearchType::class, [
                 'required' => false,
-                'label' => 'Le nom de la sortie contient : ',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => [
+                    'class' => 'inptFilter neonText',
+                    'placeholder' => 'Le nom de la sortie contient',
+                ],
             ])
             ->add('startDate', DateType::class, [
                 'mapped' => false,
                 'required' => false,
                 'widget' => 'single_text',
-                'label' => 'Entre ',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => ['class' => 'inptFilter effetneon'],
+
             ])
             ->add('endDate', DateType::class, [
                 'mapped' => false,
                 'required' => false,
                 'widget' => 'single_text',
-                'label' => 'et  ',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => ['class' => 'inptFilter effetneon'],
             ])
 
             ->add('isOrganizer', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => ' Sorties dont je suis l\'organisateur/trice',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => ['class' => 'inptCheckFilter'],
             ])
             ->add('isSubscribe', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => ' Sorties auxquelles je suis inscrit/e',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => ['class' => 'inptCheckFilter'],
             ])
             ->add('isNotSuscribe', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => ' Sorties auxquelles je ne suis pas inscrit/e',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => ['class' => 'inptCheckFilter'],
             ])
-            ->add('isTripsPassed', CheckboxType::class, [
+            ->add('isHangoutPassed', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => ' Sorties passées',
-                'attr' => ['class' => ''],
+                'label'=>false,
+                'attr' => ['class' => 'inptCheckFilter'],
             ]);
     }
 
