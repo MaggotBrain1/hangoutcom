@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage City{% endblock %}
+
+{% block main %}
+    <h1 class="container text-center">Gérer les villes</h1>
+    <h2 class="text-left">Filtrer les villes</h2>
+    <p class="text-left">Le nom contient :</p>
+    <input type="text" name="search" placeholder="HER">
+    <button type="submit">Rechercher</button>
+<table class="table">
+    <thead class="sticky-top">
+    <tr>
+        <th id="campusName" scope="row" class="txtTh neonText">Ville</th>
+        <th id="campusZipCode" scope="row" class="txtTh neonText">Code Postal</th>
+        <th id="actions" scope="row" class="txtTh neonText">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for city in cities %}
+        <tr>
+            <td>{{ city.name }}</td>
+            <td>{{ city.zipCode }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+
+{% endblock %}

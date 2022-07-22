@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Campus{% endblock %}
+
+{% block main %}
+
+    <h1 class="container text-center">Gérer les campus</h1>
+    <h2 class="text-left">Filtrer les sites</h2>
+    <p class="text-left">Le nom contient :</p>
+    <input type="text" name="search" placeholder="HER">
+    <button type="submit">Rechercher</button>
+
+    <table class="table">
+        <thead class="sticky-top">
+        <tr>
+            <th id="campusName" scope="row" class="txtTh neonText">Campus</th>
+            <th id="actions" scope="row" class="txtTh neonText">Actions</th>
+        </tr><br>
+        </thead>
+        <tbody>
+        {% for camp in campus %}
+            <tr>
+                <td>{{ camp.name }}</td>
+                <td></td>
+            </tr><br>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
+{% endblock %}
