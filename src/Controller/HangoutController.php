@@ -123,7 +123,6 @@ class HangoutController extends AbstractController
     public function registerToHangout( int $HangoutId,EntityManagerInterface $em): Response
     {
         $userId = $this->getUser()->getId();
-
         $hangout = $em->getRepository(Hangout::class)->find($HangoutId);
         $currentUser = $em->getRepository(User::class)->find($userId);
         if (!$hangout) {
