@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\RangeValidator;
 
 class HangoutFormType extends AbstractType
 {
@@ -78,6 +80,7 @@ class HangoutFormType extends AbstractType
                 'row_attr' => [
                     'class' => 'form-floating mb-1',
                 ],
+                'constraints'=>[new Positive(['message'=>'le nombre de participants doit être positif'])]
             ])
 
 

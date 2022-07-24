@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Hangout;
 use App\Entity\Status;
 use App\Entity\User;
+use App\Form\HangoutCancelType;
 use App\Form\HangoutFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\StatusRepository;
@@ -69,8 +70,13 @@ class HangoutController extends AbstractController
     #[Route('/hangout/edit{id}', name: 'app_hangout_edit',  requirements: ['id' => '\d+'])]
     public function edit(EntityManagerInterface $em, int $id,Request $request,StatusRepository $statusRepository): Response
     {
+
         $hangout = $em->getRepository(Hangout::class)->find($id);
         $currentUser = $this->getUser();
+        if($hangout->getOrganizer()->getId() != $currentUser->getId())
+        {
+            return $this->redirectToRoute('app_home');
+        }
         $campusOrganizerSite = $currentUser->getCampus();
 
         if (!$hangout) {
@@ -81,7 +87,7 @@ class HangoutController extends AbstractController
         $hangoutForm = $this->createForm(HangoutFormType::class, $hangout,['defaultCampus'=>$campusOrganizerSite]);
         $hangoutForm->handleRequest($request);
 
-        if($hangoutForm->isSubmitted() && $hangoutForm->isSubmitted()){
+        if($hangoutForm->isSubmitted() && $hangoutForm->isValid()){
             if ($request->request->get('submit') === 'published'){
                 $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
             }elseif($request->request->get('submit') === 'cancel'){
@@ -104,6 +110,10 @@ class HangoutController extends AbstractController
     public function delete(EntityManagerInterface $em, int $id): Response
     {
         $hangout = $em->getRepository(Hangout::class)->find($id);
+        $currentUser = $this->getUser();
+        if($hangout->getOrganizer()->getId() != $currentUser->getId()){
+            return $this->redirectToRoute('app_home');
+        }
 
         if (!$hangout) {
             throw $this->createNotFoundException(
@@ -129,7 +139,7 @@ class HangoutController extends AbstractController
             throw $this->createNotFoundException(
                 'No hangout found for id '.$HangoutId
             );
-        }else{
+        }else if($hangout->getHangouts()->count() < $hangout->getMaxOfRegistration() && $hangout->getRegisterDateLimit() > new \DateTime()){
         $relation = $hangout->addHangout($currentUser);
         $em->persist($relation);
         $em->flush();
@@ -147,7 +157,7 @@ class HangoutController extends AbstractController
             throw $this->createNotFoundException(
                 'No hangout found for id '.$HangoutId
             );
-        }else{
+        }else if($hangout->getOrganizer() != $currentUser && $hangout->getRegisterDateLimit() > New \DateTime()){
             $relation = $hangout->removeHangout($currentUser);
             $em ->persist($relation);
             $em->flush();
@@ -156,13 +166,29 @@ class HangoutController extends AbstractController
     }
 
     #[Route('/hangout/cancel/{id}', name: 'app_hangout_cancel', requirements: ['id' => '\d+'])]
-    public function editStatus(EntityManagerInterface $em, HangoutRepository $hangoutRepository,StatusRepository $statusRepository, int $id): Response
+    public function editStatus(EntityManagerInterface $em, HangoutRepository $hangoutRepository,StatusRepository $statusRepository, int $id,Request $request): Response
     {
-        $hangout = new Hangout();
         $hangout = $hangoutRepository->find($id);
-        $hangout->setStatus($statusRepository->find(Status::STATUS_CANCELED));
+        $currentUser = $this->getUser();
+        if($hangout->getStatus()->getLabel() === 'annulée' || $currentUser !== $hangout->getOrganizer())
+        {
+            return $this->redirectToRoute('app_home');
+        }
+        $form = $this->createForm(HangoutCancelType::class,$hangout);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid() && $form->get('reason')->getData() != '')
+        {
 
-        return $this->redirectToRoute('app_home');
+            $hangout->setStatus($statusRepository->find(Status::STATUS_CANCELED));
+            $hangout->setReason($form->get('reason')->getData());
+            $em->flush();
+            return $this->redirectToRoute('app_home');
+        }
+
+
+        return $this->renderForm('hangout/cancelHangout.html.twig',[
+        'form'=>$form,'hangout'=>$hangout
+        ]);
     }
 
 
