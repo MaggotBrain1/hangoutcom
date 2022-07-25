@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Form\CampusFormType;
 use App\Repository\CampusRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CampusController extends AbstractController
 {
-
     #[Route('/campus', name: 'app_campus')]
     #[IsGranted('ROLE_ADMIN')]
     public function index(EntityManagerInterface $em,Request $request,CampusRepository $campusRepository): Response
