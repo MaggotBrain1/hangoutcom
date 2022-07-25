@@ -22,39 +22,39 @@
 
         <div class="row">
             <div class="col-6">{{ form_label(editUserForm.pseudo) }} :</div>
-            <div class="col-6">{{ form(editUserForm.pseudo) }}</div>
+            <div class="col-6">{{ form_row(editUserForm.pseudo) }}</div>
         </div>
 
         <div class="row">
             <div class="col-6">{{ form_label(editUserForm.name) }} :</div>
-            <div class="col-6">{{ form(editUserForm.name) }}</div>
+            <div class="col-6">{{ form_row(editUserForm.name) }}</div>
         </div>
 
         <div class="row">
             <div class="col-6">{{ form_label(editUserForm.lastName) }} :</div>
-            <div class="col-6">{{ form(editUserForm.lastName) }}</div>
+            <div class="col-6">{{ form_row(editUserForm.lastName) }}</div>
         </div>
         <div class="row">
             <div class="col-6">{{ form_label(editUserForm.phone) }} :</div>
-            <div class="col-6">{{ form(editUserForm.phone) }}</div>
+            <div class="col-6">{{ form_row(editUserForm.phone) }}</div>
         </div>
         <div class="row">
             <div class="col-6">{{ form_label(editUserForm.email) }} :</div>
-            <div class="col-6">{{ form(editUserForm.email) }}</div>
+            <div class="col-6">{{ form_row(editUserForm.email) }}</div>
         </div>
         <div class="row">
             {#    <div class="col-6">{{ form_label(editUserForm.plainPassword) }} :</div>
         <div class="col-6">{{ form(editUserForm.plainPassword) }}</div> #}
             <div class="col-6">{{ form_label(editUserForm.password) }} :</div>
-            <div class="col-6 no-gutters">{{ form(editUserForm.password) }}</div>
+            <div class="col-6 no-gutters">{{ form_row(editUserForm.password) }}</div>
         </div>
         <div class="row">
             <div class="col-6 ">{{ form_label(editUserForm.confirm) }} :</div>
-            <div class="col-6 no-gutters">{{ form(editUserForm.confirm) }}</div>
+            <div class="col-6 no-gutters">{{ form_row(editUserForm.confirm) }}</div>
         </div>
         <div class="row">
             <div class="col-6">{{ form_label(editUserForm.campus) }} :</div>
-            <div class="col-6">{{ form(editUserForm.campus) }}</div>
+            <div class="col-6">{{ form_row(editUserForm.campus) }}</div>
         </div>
         <div class="row">
             {% if app.user.image == null %}
@@ -62,7 +62,7 @@
     {% else %}
     {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
     {% endif %}
-    {{ form_widget(editUserForm.image) }}
+    {{ form_row(editUserForm.image) }}
     </div>
         <div class="text-center">
 
