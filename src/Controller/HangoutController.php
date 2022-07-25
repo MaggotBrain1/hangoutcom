@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Form\FilterType;
 use App\Form\HangoutCancelType;
 use App\Form\HangoutFormType;
-use App\Form\HangoutFullFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
@@ -143,9 +142,11 @@ class HangoutController extends AbstractController
         if ($hangoutForm->isSubmitted() && $hangoutForm->isValid()) {
             if ($request->request->get('submit') === 'published') {
                 $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
+                $this->registerToHangout($hangout->getId(), $em);
             } elseif ($request->request->get('submit') === 'cancel') {
                 $hangout->setStatus($statusRepository->find(Status::STATUS_CANCELED));
             }
+
             $em->persist($hangout);
             $em->flush();
             $this->addFlash('success', 'Hangout successfully updated .');
@@ -193,9 +194,16 @@ class HangoutController extends AbstractController
                 'No hangout found for id ' . $HangoutId
             );
         } else if ($hangout->getHangouts()->count() < $hangout->getMaxOfRegistration() && $hangout->getRegisterDateLimit() > new \DateTime()) {
-            $relation = $hangout->addHangout($currentUser);
-            $em->persist($relation);
-            $em->flush();
+            if ($hangout->getStatus()->getId() == Status::STATUS_OPENED ){
+                $relation = $hangout->addHangout($currentUser);
+                $em->persist($relation);
+                $em->flush();
+            }else{
+                if ($hangout->getOrganizer() == !$this->getUser()) {
+                    $this->addFlash('fail', 'Désolé l\'inscription pour la sortie' . $hangout->getName() . ' est indisponible .');
+                }
+            }
+
 
         }
         return $this->redirectToRoute('app_home');
