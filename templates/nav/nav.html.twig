@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path("app_home") }}" title="Home"><img
-                    src="{{ asset('img/logo/LogoHangout.jpg') }}"></a>
+        <a class="navbar-brand" href="{{ path("app_home") }}" title="Home">
+            <img src="{{ asset('img/logo/LogoHangout.jpg') }}" alt="logo du site Hangout.com" >
+        </a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav">
                 {% if app.user %}
@@ -10,7 +11,7 @@
                     <a class="nav-link active" href="{{ path("app_hangout_list") }}" title="Create">View Hangouts</a>
 #}
                     <a class="nav-link active" href="{{ path("app_hangout_create",{'id' : app.user.id}) }}" title="Create">Create
-                            Hangout</a></li>
+                            Hangout</a>
                     <a class="nav-link active" href="{{ path("app_logout") }}" title="Home">Logout</a>
                 {% else %}
                     <a class="nav-link active" href="{{ path("app_login") }}" title="Login">Login</a>
@@ -18,6 +19,8 @@
             </div>
         </div>
     </div>
-    {#{% include('fragments/headerInfo.html.twig')%}#}
+    {% if app.user %}
+        {% include('fragments/headerInfo.html.twig')%}
+    {% endif %}
 
 </nav>

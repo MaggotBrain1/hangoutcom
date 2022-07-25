@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CityController!{% endblock %}
+
+{% block main %}
+    <table class="table">
+        <thead class="sticky-top">
+        <tr>
+            <th scope="col" class="txtTh txtThNbor neonText">Ville</th>
+            <th scope="col" class="txtTh neonText">Code postal</th>
+            <th scope="col" class="txtTh neonText">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for city in citys %}
+            <tr>
+                <th id="nameHang" scope="row">{{ city.name }}</th>
+                <td>{{ city.zipCode}}</td>
+                <td>
+                    <a href="{{ path('app_home')}}" title="hangout  details">Modifier</a>
+                    <a href="{{ path('app_city_delete', {'id': city.id}) }}" title="hangout  details">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            {{ form_start(form) }}
+            <th id="nameHang" scope="row">{{ form_row(form.name) }}</th>
+            <td>{{ form_row(form.zipCode) }}</td>
+           <td><button type="submit">Ajouter</button> </td>
+            {{ form_end(form) }}
+
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

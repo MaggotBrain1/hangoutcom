@@ -2,93 +2,104 @@
 
 {% block title %}Hello HangoutController!{% endblock %}
 
-{% block main%}
-    <h1  class="neonText">Détail de la sortie </h1>
-        <div class="detailContainer">
-            <div class="detailCol">
-                <div class="detailRow">
-                    <h5>Nom de la sortie :</h5>
-                    <p>{{ hangout.name }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Date et heure de la sortie :</h5>
-                    <p>{{ hangout.startTime |date('Y-m-d H:i') }}</p>
-                </div>
-                <div class="detailRow">
-                <h5>Date limite d'inscription :</h5>
-                    <p>{{ hangout.registerDateLimit |date('Y-m-d') }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Nombre de places :</h5>
-                    <p>{{ hangout.MaxOfRegistration }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Duréé :</h5>
-                    {# TODO convertir les heures et minutes en minutes #}
-                    <p>{{ hangout.duration |date('H:i') }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Description et infos : </h5>
-                    <div class="hangoutDescripton">
-                        <p >{{ hangout.hangoutInformations }}</p>
-                    </div>
-                </div>
+{% block main %}
+    <h1 class="neonText">Détail de la sortie </h1>
+    {% if hangout.Status.id == 3 %}
+        <h2 class="hangoutCanceld effetneon">Sortie Cloturée</h2>
+    {% elseif hangout.Status.id == 5 %}
+        <h2 class="hangoutCanceld effetneon">Sortie Passée</h2>
+    {% elseif hangout.Status.id == 4 %}
+        <h2 class="hangoutCanceld effetneon">Sortie En cours</h2>
+    {% elseif hangout.Status.id == 6 %}
+        <h2 class="hangoutCanceld effetneon">Sortie annulée <i class="fa-solid fa-face-sad-cry"></i></h2>
+    {% endif %}
+    <div class="detailContainer">
+        <div class="detailCol">
+            <div class="detailRow">
+                <h5>Nom de la sortie :</h5>
+                <p>{{ hangout.name }}</p>
             </div>
-
-            <div class="detailCol">
-                <div class="detailRow">
-                    <h5>Campus :</h5>
-                    <p>{{ hangout.campusOrganizerSite.name }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Lieu :</h5>
-                    <p>{{ hangout.place.name }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Rue :</h5>
-                    <p>{{ hangout.place.street }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Code Postal :</h5>
-                    <p>{{ hangout.place.city.zipCode }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Latitude</h5>
-                    <p>{{ hangout.place.latitude }}</p>
-                </div>
-                <div class="detailRow">
-                    <h5>Longitude :</h5>
-                    <p>{{ hangout.place.longitude }}</p>
+            <div class="detailRow">
+                <h5>Date et heure de la sortie :</h5>
+                <p>{{ hangout.startTime |date('Y-m-d H:i') }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Date limite d'inscription :</h5>
+                <p>{{ hangout.registerDateLimit |date('Y-m-d') }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Nombre de places :</h5>
+                <p>{{ hangout.MaxOfRegistration }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Duréé :</h5>
+                {# TODO convertir les heures et minutes en minutes #}
+                <p>{{ hangout.duration |date('H:i') }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Description et infos : </h5>
+                <div class="hangoutDescripton">
+                    <p>{{ hangout.hangoutInformations }}</p>
                 </div>
             </div>
         </div>
 
+        <div class="detailCol">
+            <div class="detailRow">
+                <h5>Campus :</h5>
+                <p>{{ hangout.campusOrganizerSite.name }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Lieu :</h5>
+                <p>{{ hangout.place.name }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Rue :</h5>
+                <p>{{ hangout.place.street }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Code Postal :</h5>
+                <p>{{ hangout.place.city.zipCode }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Latitude</h5>
+                <p>{{ hangout.place.latitude }}</p>
+            </div>
+            <div class="detailRow">
+                <h5>Longitude :</h5>
+                <p>{{ hangout.place.longitude }}</p>
+            </div>
+        </div>
+    </div>
+
     <div class="usersTabCont">
         <h2>Liste des participants :</h2>
         <div class="usersTab">
-        <table class="table">
-          <thead>
-             <tr>
-              <th scope="col">Pseudo</th>
-              <th scope="col">Nom</th>
-              </tr>
-          </thead>
-          <tbody>
-            {% if listUsersInHangout %}
+            <table class="table">
+                <thead>
                 <tr>
-                    <th scope="row">{{ hangout.organizer.pseudo }}</th>
-                    <td>{{ hangout.organizer.name }}</td>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Nom</th>
                 </tr>
-                {% for userH in listUsersInHangout %}
-                <tr>
-                    <th scope="row">{{ userH.pseudo }}</th>
-                    <td>{{ userH.name }}</td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-           </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                {% if listUsersInHangout %}
+                    {% for userH in listUsersInHangout %}
+                        <tr>
+                            <th scope="row">{{ userH.pseudo }}</th>
+                            <td>
+                                <a href="{{ path('app_user',{'id': userH.id}) }}" title="view user in hangout">
+                                    {{ userH.name }}
+                                </a>
+                            </td>
+
+
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 {% endblock %}

@@ -1,0 +1,53 @@
+
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Full Hangout edit</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('app_city') }}">Back to the list</a>
+        </li>
+    </ul>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $('#appbundle_place_city').change(function () {
+            var citySelector = $(this);
+
+            // Request the neighborhoods of the selected city.
+            $.ajax({
+                url: "{{ path('app_hangout_place_by_city') }}",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    cityid: citySelector.val()
+                },
+                success: function (neighborhoods) {
+                    var neighborhoodSelect = $("#appbundle_place_city");
+
+                    // Remove current options
+                    neighborhoodSelect.html('');
+
+                    // Empty value ...
+                    neighborhoodSelect.append('<option value> Select a neighborhood of ' + citySelector.find("option:selected").text() + ' ...</option>');
+
+
+                    $.each(neighborhoods, function (key, neighborhood) {
+                        neighborhoodSelect.append('<option value="' + neighborhood.id + '">' + neighborhood.name + '</option>');
+                    });
+                },
+                error: function (err) {
+                    alert("An error ocurred while loading data ...");
+                }
+            });
+        });
+    </script>
+{% endblock %}

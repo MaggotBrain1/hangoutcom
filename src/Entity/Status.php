@@ -16,6 +16,7 @@ class Status
     const STATUS_IN_PROGRESS = 4;
     const STATUS_PAST = 5;
     const STATUS_CANCELED = 6;
+    const STATUS_ARCHIVED = 7;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

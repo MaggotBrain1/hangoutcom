@@ -1,3 +1,8 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+app_hangout_place_by_city:
+  path:     /hangout/placeByCity
+  controller: App\Controller\HangoutController::listOfPlaceCityAction
+  methods:  GET

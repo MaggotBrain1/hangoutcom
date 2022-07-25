@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Hangout;
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -41,7 +42,9 @@ class HangoutRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByFilter($campus, $name, $startDate, $endDate, $imOrginizer, $imIn, $imNotIn, $pastHangout,$user){
+
+
+    public function findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout,$user){
         $queryFilter = $this->createQueryBuilder('h')
             ->orderBy('h.startTime', 'ASC');
         if($campus){
@@ -62,30 +65,62 @@ class HangoutRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
         if ($imIn and !$imNotIn) {
-            $queryFilter->innerJoin('h.hangouts', 'sub')
+            $queryFilter->join('h.hangouts', 'sub')
                 ->andWhere('sub = :user')
                 ->setParameter('user', $user);
         }
 
-        //TODO QUENTIN gerer la requete dans le cas ou notre USER n'est pas inscrit à une sortie
-     /*   if ($imNotIn and !$imIn) {
-            $queryFilter->innerJoin('h.hangouts', 'sub')
-                ->andWhere('sub = :user')
+        if ($imNotIn and !$imIn) {
+            $queryFilter->join('h.hangouts', 'u')
+                ->join('h.Status', 's')
+                ->andWhere('u.id <> :user')
+                ->andWhere('h.organizer <> :user')
+                ->andWhere('s.id <> 7')
                 ->setParameter('user', $user);
-        }*/
-
+        }
         if ($pastHangout) {
-            $today = new \DateTime();
-            $queryFilter->andWhere('h.startTime >= :today ')
-                ->setParameter('today', $today);
+            $queryFilter->where('h.Status = 5')
+                ->orderBy('h.id', 'ASC');
         }
 
         $res = $queryFilter->getQuery();
         return $res->getResult();
     }
 
+        /**
+     * @return Hangout[] Return un tableau de sortie dont l'user n'est pas inscrit
+     */
+    public function findByStatusCanceled($idUser): array
+    {
+        return $this->createQueryBuilder('h')
+            ->join('h.Status', 's')
+            ->join('h.hangouts', 'u')
+            ->where('s.id = 6')
+            ->setParameter('idUser', $idUser)
+            ->andWhere('u.id = :idUser')
+            ->orderBy('h.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
+    /*
+     * on affiche les sortie en filtrant les sortie finit depuis un moi */
+    public function findHangoutAvaible(): array
+    {
+        $date = null;
+        return $this->createQueryBuilder('h')
+            ->where('h.Status <>  7')
+            ->orderBy('h.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
+    /*
+     * Un user est incrit a une sortie
+     * Une sortie est annulé
+     * on récupere les sortie annulé au quelle l'user a inscrit */
 
 //    /**
 //     * @return Hangout[] Returns an array of Hangout objects
