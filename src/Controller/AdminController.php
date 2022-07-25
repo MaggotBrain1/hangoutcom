@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Entity\City;
-use App\Form\CampusType;
+use App\Form\CampusFormType;
 use App\Form\CityType;
 use App\Repository\CampusRepository;
 use App\Repository\CityRepository;
@@ -69,7 +69,7 @@ class AdminController extends AbstractController
 
         $newCampus = new Campus();
 
-        $formCampusType = $this->createForm(CampusType::class, $newCampus);
+        $formCampusType = $this->createForm(CampusFormType::class, $newCampus);
         $formCampusType->handleRequest($request);
 
         if($formCampusType->isSubmitted() && $formCampusType->isValid()){

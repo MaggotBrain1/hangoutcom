@@ -139,13 +139,14 @@ h1,h2{
     align-items: center;
     height: 100%;
 }
-.detailRow{
+.detailRow {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     height: 50px;
     width: 500px;
+}
 
 #edit_profile_password, #edit_profile_confirm {
     right: -1.5rem;
@@ -154,7 +155,6 @@ h1,h2{
     padding: 0;
 }
 
-}
 .hangoutDescripton{
     max-height: 50px;
     width: 50%;
@@ -355,4 +355,7 @@ h1 {
     background-color: #7b2cbf;
 }
 
-
+.hangoutCanceld{
+    font-family: 'Neonderthaw', cursive;
+    color: red;
+}
