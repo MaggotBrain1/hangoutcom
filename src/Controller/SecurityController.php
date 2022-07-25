@@ -47,6 +47,7 @@ class SecurityController extends AbstractController
         if(!$user){
             throw $this->createNotFoundException("Oh no !!");
         }
+
         $form = $this->createForm(EditProfileType::class,$user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
@@ -80,8 +81,7 @@ class SecurityController extends AbstractController
         }
 
         return $this->renderForm("user/profile.html.twig",
-            ['user' => $user,'editUserForm'=>$form
-            ]);
+            ['user' => $user,'editUserForm'=>$form]);
     }
     #[Route(path: '/user/{id}', name: 'app_user')]
 public function profileUsers(int $id,UserRepository $userRepository)
