@@ -304,29 +304,6 @@ class HangoutController extends AbstractController
                 $em->persist($hg);
                 $em->flush();
 
-<<<<<<< HEAD
-=======
-        foreach ($allHangouts as $hg){
-            $startDate = $hg->getStartTime()->format('Y-m-d');
-            $today = date("Y-m-d");
-
-            if ($startDate == $today) {
-                $hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));
-            }
-            if($today >= date('Y-m-d', strtotime($startDate. ' + 1 day')) &&
-                date('Y-m-d', strtotime($startDate. ' + 1 day')) <= date('Y-m-d', strtotime($startDate. ' + 1 month')) ){
-                $hg->setStatus($statusRepository->find(Status::STATUS_PAST));
-            }
-            if($today >= date('Y-m-d', strtotime($startDate. ' + 1 months')) ){
-                $hg->setStatus($statusRepository->find(Status::STATUS_ARCHIVED));
-
-            }
-            if($today >= $hg->getRegisterDateLimit()->format('Y-m-d')){
-                $hg->setStatus($statusRepository->find(Status::STATUS_CLOSED));
-            }
-            $em->persist($hg);
-            $em->flush();
->>>>>>> parent of 2868e22 (Gestion des status en fonction des dates)
         }
 
 

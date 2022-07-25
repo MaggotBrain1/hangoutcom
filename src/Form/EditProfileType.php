@@ -49,11 +49,12 @@ class EditProfileType extends AbstractType
             ])
             ->add('password',PasswordType::class,[
                 'label'=>false,
+                'required' => false,
 
             ])
             ->add('plainPassword',PasswordType::class,[
                 'mapped'=>false,
-
+                'required' => false,
 
             ],
                 )
