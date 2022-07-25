@@ -33,6 +33,7 @@ class HangoutController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+
         //à sa connection on affiche à l'user un message l'avertissant de l'annulation
         //d'une sortie à la quelle il était inscrit
         $hangoutCanceled = $hangoutRepository->findByStatusCanceled($user->getId());
@@ -255,23 +256,60 @@ class HangoutController extends AbstractController
     public function updateStatusOfHangouts($allHangouts, StatusRepository $statusRepository, EntityManagerInterface $em){
 
         foreach ($allHangouts as $hg){
-            $startDate = $hg->getStartTime()->format('Y-m-d');
-            $today = date("Y-m-d");
+            $startDate = $hg->getStartTime();
+            $now = (new \DateTime("now"));
+            dump($now);
+            $interval = $startDate->diff($hg->getDuration());
+            dump($interval); // TODO modifier car interval actuel à 70 piges ... Pb conversion Timestamp
+            $endDate = $startDate->add($interval);
+            $oneMothMore = $startDate->modify('+1 month');
 
+            dump($now);
+           /* // SECTION TEST
+            dump($startDate == $now);
+            dump($now >= date('Y-m-d H:i', strtotime($startDate. ' + 1 day')));
+                 dump($now >= date('Y-m-d H:i', strtotime($startDate. ' + 1 months')) );
+                      dump($now >= $hg->getRegisterDateLimit()->format('Y-m-d H:i'));
+            dump($hg->getName());
+            // FIN SECTION TEST*/
+
+            // To switch case
+            // CAS 1 : now est >= date && < date + durée sortie STATUT EN COURS
+            // CAS 2 : now >= date + durée sortie && < date + 1 mois  => STATUT PASSé
+            // CAS 3 : now > date + 1 mois => STATUT ACHIVE
+
+            // TODO Vérifier que les Status se mettent à jour de façon cohérente aux règles
+
+            switch($hg->getStatus()->getId()){
+                case ($startDate <= $now && $now < $endDate) :
+                    if ($hg->getStatus()->getId() != Status::STATUS_IN_PROGRESS) {$hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));}
+                    break;
+                case ($now > $endDate && $now < $endDate) :
+                    if($hg->getStatus()->getId() != Status::STATUS_PAST)  {$hg->setStatus($statusRepository->find(Status::STATUS_PAST));}
+                    break;
+                //date('Y-m-d H:i', strtotime($startDate. ' + 1 day')) <= date('Y-m-d H:i', strtotime($startDate. ' + 1 month')) ) :
+                case ($now > $oneMothMore):
+                    if ($hg->getStatus()->getId() != Status::STATUS_ARCHIVED) {$hg->setStatus($statusRepository->find(Status::STATUS_ARCHIVED));}
+                    break;
+                default:
+            }
+
+            /*$today = date("Y-m-d H:i");
             if ($startDate == $today) {
                 $hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));
             }
-            if($today >= date('Y-m-d', strtotime($startDate. ' + 1 day')) &&
-                date('Y-m-d', strtotime($startDate. ' + 1 day')) <= date('Y-m-d', strtotime($startDate. ' + 1 month')) ){
+            if($today >= date('Y-m-d H:i', strtotime($startDate. ' + 1 day')) &&
+                date('Y-m-d H:i', strtotime($startDate. ' + 1 day')) <= date('Y-m-d H:i', strtotime($startDate. ' + 1 month')) ){
                 $hg->setStatus($statusRepository->find(Status::STATUS_PAST));
             }
-            if($today >= date('Y-m-d', strtotime($startDate. ' + 1 months')) ){
+            if($today >= date('Y-m-d H:i', strtotime($startDate. ' + 1 months')) ){
                 $hg->setStatus($statusRepository->find(Status::STATUS_ARCHIVED));
 
             }
-            if($today >= $hg->getRegisterDateLimit()->format('Y-m-d')){
+            if($today >= $hg->getRegisterDateLimit()->format('Y-m-d H:i')){
                 $hg->setStatus($statusRepository->find(Status::STATUS_CLOSED));
-            }
+            }*/
+
             $em->persist($hg);
             $em->flush();
         }
