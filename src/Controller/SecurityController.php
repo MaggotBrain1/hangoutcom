@@ -20,6 +20,12 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        $user = $this->getUser();
+        if($user)
+        {
+            $this->addFlash('fail','Vous êtes déja connecté!');
+            return $this->redirectToRoute('app_home');
+        }
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
@@ -83,14 +89,14 @@ class SecurityController extends AbstractController
         return $this->renderForm("user/profile.html.twig",
             ['user' => $user,'editUserForm'=>$form]);
     }
-    #[Route(path: '/user/{id}', name: 'app_user')]
-public function profileUsers(int $id,UserRepository $userRepository)
+    #[Route(path: '/user/{pseudo}', name: 'app_user')]
+public function profileUsers(string $pseudo,UserRepository $userRepository)
     {
-        $user = $userRepository->find($id);
+        $user = $userRepository->findBy(['pseudo'=>$pseudo]);
         $thisUser = $this->getUser();
-        if($user!= null)
+        if($user[0]!= null)
         {
-            if($user === $thisUser)
+            if($user[0] === $thisUser)
             {
                 return $this->redirectToRoute('app_profile');
             }
@@ -98,7 +104,7 @@ public function profileUsers(int $id,UserRepository $userRepository)
         else{
             throw $this->createNotFoundException("utilisateur introuvable");
         }
-        return $this->render("otherUser/profile.html.twig",
-        ['user'=>$user]);
+        return $this->render("otherUser/otherProfile.html.twig",
+        ['user'=>$user[0]]);
     }
 }

@@ -11,6 +11,7 @@ use App\Form\HangoutFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
+use App\services\UpdateStatusHangouts;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,7 +25,7 @@ class HangoutController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
-    public function index(HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository): Response
+    public function index(HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository,UpdateStatusHangouts $updateStatusHangouts): Response
     {
         $user = $this->getUser();
 
@@ -59,7 +60,7 @@ class HangoutController extends AbstractController
             $hangouts = $hangoutRepository->findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout,$user);
         }else{
             $hangouts = $hangoutRepository->findHangoutAvaible();
-            $this->updateStatusOfHangouts($hangouts,$statusRepository,$em);
+            $updateStatusHangouts->updateStatusOfHangouts($hangouts,$statusRepository,$em);
         }
 
         return $this->render('hangout/hangoutList.html.twig', [
@@ -68,7 +69,7 @@ class HangoutController extends AbstractController
             'subscribe'=>$hangoutRepository,
         ]);
     }
-    #[Route('/hangout/detail{id}', name: 'app_hangout_detail', methods: ['GET', 'POST'])]
+    #[Route('/hangout/detail/{id}', name: 'app_hangout_detail', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function detail(HangoutRepository $hangoutRepository, int $id): Response
     {
@@ -120,7 +121,7 @@ class HangoutController extends AbstractController
         ]);
     }
 
-    #[Route('/hangout/edit{id}', name: 'app_hangout_edit', requirements: ['id' => '\d+'])]
+    #[Route('/hangout/edit/{id}', name: 'app_hangout_edit', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER')]
     public function edit(EntityManagerInterface $em, int $id, Request $request, StatusRepository $statusRepository): Response
     {
@@ -316,43 +317,6 @@ class HangoutController extends AbstractController
             ]);
         }*/
 
-    public function updateStatusOfHangouts($allHangouts, StatusRepository $statusRepository, EntityManagerInterface $em){
-        foreach ($allHangouts as $hg){
-            $hangoutClone = clone($hg);
-            $startDate = $hg->getStartTime();
-            $now = (new \DateTime("now")); // renvoi la date/h/m/s du jour
-            $durationH = $hg->getDuration()->format('H');// on récupere les minutes de la durée
-            $durationM = $hg->getDuration()->format('i');//on récupere les heures de la durée
-            $endDate = clone($startDate);// on clone $startDate pour que les modification ne l'affecte pas directement.
-            $endDate->modify("+{$durationM} minutes");// on ajoute les minutes à la date de début
-            $endDate->modify("+{$durationH} hour");// on ajoute les heures à la date de départ
-            // $endDate === la date et heures de la sortie additionnée au temps de durée de la sorite
-            $oneMothMore = clone($startDate);
-            $oneMothMore->modify('+1 month');
 
-            switch($hg->getStatus()->getId()){
-                case ($startDate <= $now && $now < $endDate) :
-                    if ($hg->getStatus()->getId() != Status::STATUS_IN_PROGRESS){
-                        $hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));
-                    }
-                    break;
-                case ($now > $endDate && $now < $oneMothMore ) :
-                    if($hg->getStatus()->getId() != Status::STATUS_PAST){
-                        $hg->setStatus($statusRepository->find(Status::STATUS_PAST));
-                    }
-                    break;
-                case ($now > $oneMothMore):
-                    if ($hg->getStatus()->getId() != Status::STATUS_ARCHIVED) {
-                        $hg->setStatus($statusRepository->find(Status::STATUS_ARCHIVED));
-                    }
-                    break;
-            }
-
-            if ($hangoutClone->getStatus()->getId() != $hg->getStatus()->getId()){
-                $em->persist($hg);
-                $em->flush();
-            }
-        }
-    }
 
 }

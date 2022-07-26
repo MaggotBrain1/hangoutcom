@@ -88,7 +88,7 @@
                         <tr>
                             <th scope="row">{{ userH.pseudo }}</th>
                             <td>
-                                <a href="{{ path('app_user',{'id': userH.id}) }}" title="view user in hangout">
+                                <a href="{{ path('app_user',{'pseudo': userH.pseudo}) }}" title="view user in hangout">
                                     {{ userH.name }}
                                 </a>
                             </td>

@@ -108,7 +108,8 @@ class HangoutRepository extends ServiceEntityRepository
     public function findHangoutAvaible(): array
     {
         return $this->createQueryBuilder('h')
-            ->where('h.Status <>  7')
+            ->where('h.Status <>  7') // ne pas inclure les sorties archivées
+            ->andWhere('h.Status <> 6') // ne pas inclure les sorties annulées
             ->orderBy('h.startTime', 'ASC')
             ->getQuery()
             ->getResult();

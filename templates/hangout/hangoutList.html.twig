@@ -135,14 +135,14 @@
                     <p class="pTicket">Organisateur</p>
                     {% if hangout.organizer.image != null %}
                         <p>
-                            <a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">
+                            <a href="{{ path('app_user',{'pseudo': hangout.organizer.pseudo}) }}">
                                 <img src="{{ asset('photos/'~hangout.organizer.image) }}" alt="Photo de profil"
                                      class="miniPP">
                             </a>
                         </p>
                     {% else %}
                         <p>
-                            <a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">
+                            <a href="{{ path('app_user',{'pseudo': hangout.organizer.pseudo}) }}">
                                 {{ hangout.organizer.pseudo }}
                             </a>
                         </p>
@@ -165,7 +165,7 @@
                             //si l'organisateur n'est pas l'user
                             #}
                             {% if  hangout.organizer.id != app.user.id %}
-                                <a class="actionsList" href="{{ path('app_hangout_detail', {id: hangout.id}) }}"
+                                <a class="actionsList" href="{{ path('app_hangout_detail', {'id': hangout.id}) }}"
                                    title="hangout  details">
                                     <i class="fa-regular fa-eye fa-lg"></i>
                                 </a>
