@@ -57,7 +57,7 @@
             <div class="col-6">{{ form_row(editUserForm.campus) }}</div>
         </div>
         <div class="row">
-            {% if app.user.image == null %}
+           {% if app.user.image == null %}
         {{ form_label(editUserForm.image) }}
     {% else %}
     {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
