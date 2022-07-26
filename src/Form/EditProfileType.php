@@ -24,39 +24,45 @@ class EditProfileType extends AbstractType
         $builder
             ->add('pseudo',TextType::class,[
                 'label'=>false,
-                'required' => true,
+                'required'=>false,
 
             ])
             ->add('name',TextType::class,[
                 'label'=>false,
-                 'required' => true,
+                'required'=>false,
 
             ])
             ->add('lastName',TextType::class,[
                 'label'=>false,
-                'required' => true,
+                'required'=>false,
 
             ])
             ->add('phone',TextType::class,[
                 'label'=>false,
-                'required' => true,
+                'required'=>false,
 
             ])
             ->add('email',TextType::class,[
                 'label'=>false,
-                 'required' => true,
+                'required'=>false,
 
             ])
             ->add('password',PasswordType::class,[
                 'label'=>false,
+                'required'=>false,
+
 
             ])
             ->add('plainPassword',PasswordType::class,[
                 'mapped'=>false,
+                'label'=>false,
+                'required'=>false,
+
+
 
 
             ],
-                )
+            )
             /*->add('plainPassword',RepeatedType::class,
                 [
                     'type'=>PasswordType::class,
@@ -73,16 +79,17 @@ class EditProfileType extends AbstractType
 
             ->add('image',FileType::class,
                 [
-                'required'=>false,'label'=>'ajouter une photo de profil :',
-                'mapped'=>false,
-                'constraints'=>[new File([
-                     'maxSize'=>'4096k',
-                    'mimeTypes'=>[
-                       'image/png'
-                     ,'image/jpeg']
-                ,
-                    'mimeTypesMessage'=>'l\'image doit être au format jpg ou png']
-                )]
+                    'mapped'=>false,
+                    'required'=>false,
+                    'label'=>'ajouter une photo de profil :',
+                    'constraints'=>[new File([
+                            'maxSize'=>'4096k',
+                            'mimeTypes'=>[
+                                'image/png'
+                                ,'image/jpeg']
+                            ,
+                            'mimeTypesMessage'=>'l\'image doit être au format jpg ou png']
+                    )]
                 ])
         ;
     }

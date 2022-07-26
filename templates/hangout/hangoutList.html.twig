@@ -13,39 +13,69 @@
                 {{ form_row(filterForm.name) }}
             </div>
             <div class="rowInpt">
-                Entre {{ form_row(filterForm.startDate) }}
+                sorie/s entre {{ form_row(filterForm.startDate) }}
             </div>
             <div class="rowInpt">
                 et {{ form_row(filterForm.endDate) }}
             </div>
-        </div>
 
-        <div class="secFilter">
-            <div class="headFilterCheck">
-                <div class="rowInpt">
-                    {{ form_row(filterForm.isOrganizer) }}<p class="txtCheckFltr">Sorties dont je suis
-                        l'organisateur/trice</p>
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(filterForm.isSubscribe) }}<p class="txtCheckFltr">Sorties auxquelles je suis
-                        inscrit/e</p>
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(filterForm.isNotSuscribe) }}<p class="txtCheckFltr">Sorties auxquelles je ne suis pas
-                        inscrit/e</p>
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(filterForm.isHangoutPassed) }}<p class="txtCheckFltr">Sorties passées</p>
-                </div>
-            </div>
-            <div class="ContainerBtnSearch">
+            <div class="containerBtnSearch">
                 <button type="submit" class="btnSerch" value="Rechercher">
-                    <i class="fa-solid fa-magnifying-glass fa-lg effetneon "></i>
+                    <i class="fa-solid fa-magnifying-glass fa-l"></i>
+                </button>
+                <button type="button" class="btnAddPlace" data-bs-toggle="modal" data-bs-target="#modalMoreSearch">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-filter-circle btnAddPlace" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
                 </button>
             </div>
-            <a class="newHang" href="{{ path('app_hangout_create') }}" title="create a new hangout">Créer une sortie <i
-                        class="fa-solid fa-calendar-plus fa-lg"></i></a>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="modalMoreSearch" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="labelModal">Plus de filtres</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-content">
+                        <div class="headFilterCheck">
+                            <div class="rowInpt">
+                                {{ form_row(filterForm.isOrganizer) }}<p class="txtCheckFltr">Sorties dont je suis
+                                    l'organisateur/trice</p>
+                            </div>
+                            <div class="rowInpt">
+                                {{ form_row(filterForm.isSubscribe) }}<p class="txtCheckFltr">Sorties auxquelles je suis
+                                    inscrit/e</p>
+                            </div>
+                            <div class="rowInpt">
+                                {{ form_row(filterForm.isNotSuscribe) }}<p class="txtCheckFltr">Sorties auxquelles je ne
+                                    suis pas
+                                    inscrit/e</p>
+                            </div>
+                            <div class="rowInpt">
+                                {{ form_row(filterForm.isHangoutPassed) }}<p class="txtCheckFltr">Sorties passées</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-outline-primary" value="Rechercher">
+                            Trouver une sortie
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <a class="newHang" href="{{ path('app_hangout_create') }}" title="create a new hangout">Créer une sortie
+            <i class="fa-solid fa-calendar-plus fa-lg"></i>
+        </a>
+
         {% for message in app.flashes('notice') %}
             <div class="alert alert-info alert-dismissible fade show slideRight">
                 {{ message }}
@@ -56,81 +86,124 @@
         {% endfor %}
         {{ form_end(filterForm) }}
     </div>
-    <div id="tabScroll">
-       < <table class="table">
-            <thead class="sticky-top">
-            <tr>
-                <th scope="col" class="txtTh txtThNbor neonText">Nom de la sortie</th>
-                <th scope="col" class="txtTh neonText">Date de la sortie</th>
-                <th scope="col" class="txtTh neonText">Clôture</th>
-                <th scope="col" class="txtTh neonText">inscriptions/places</th>
-                <th scope="col" class="txtTh neonText">Etat</th>
-                <th scope="col" class="txtTh neonText">Inscrit</th>
-                <th scope="col" class="txtTh neonText">Organisateur</th>
-                <th scope="col" class="txtTh neonText">action</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for hangout in hangouts %}
-                <tr>
-                    {% if hangout.status.label  is not same as 'annulée' %}
-                    <th id="nameHang" scope="row" class="noBorder effetneon">{{ hangout.name }}</th>
-                    <td>{{ hangout.startTime |date('Y-m-d H:i') }}</td>
-                    <td>{{ hangout.registerDateLimit |date('Y-m-d') }}</td>
-                    {% if  hangout.hangouts|length ==  hangout.MaxOfRegistration %}
-                        <td>COMPLET</td>
-                    {% else %}
-                        <td>{{ hangout.hangouts|length }}/{{ hangout.MaxOfRegistration }}</td>
-                    {% endif %}
-                    <td>{{ hangout.status.label }}</td>
-                    {% if app.user in hangout.hangouts %}
-                        <td><i class="fa-solid fa-check"></i></td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    <td><a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">{{ hangout.organizer.pseudo }}</a>
-                    </td>
-                    <td>
 
-{#
-                         si la sortie est passée ou close ou annulé ou achivée
-#}
-                        {% if hangout.status.id == 3 or hangout.status.id == 4 or hangout.status.id == 5 or hangout.status.id == 6 or hangout.status.id == 7 and  hangout.organizer.id != app.user.id%}
-                            <a href="{{ path('app_hangout_detail', {id: hangout.id}) }}" title="hangout  details">Afficher</a>
+
+
+    <div id="ticketContainer" class="slideUp">
+        {% for hangout in hangouts %}
+            <div class="ticketHangout  effetneon">
+
+                <div class="rowTicket">
+                    <p class="pTicket">Nom de la sortie</p>
+                    <p id="nameHang" class="effetneon">{{ hangout.name }}</p>
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">Date de la sortie</p>
+                    <p>{{ hangout.startTime |date("d/m/Y", "Europe/Paris") }}</p>
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">Clôture</p>
+                    <p>{{ hangout.registerDateLimit |date("d/m/Y", "Europe/Paris") }}</p>
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">inscriptions/places</p>
+                    {% if  hangout.hangouts|length ==  hangout.MaxOfRegistration %}
+                        <p>COMPLET</p>
+                    {% else %}
+                        <p>{{ hangout.hangouts|length }}/{{ hangout.MaxOfRegistration }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">Etat</p>
+                    <p>{{ hangout.status.label }}</p>
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">Inscrit</p>
+                    {% if app.user in hangout.hangouts %}
+                        <p><i class="fa-solid fa-check fa-xl effetneon"></i></p>
+                    {% else %}
+                        <p></p>
+                    {% endif %}
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">Organisateur</p>
+                    {% if hangout.organizer.image != null %}
+                        <p>
+                            <a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">
+                                <img src="{{ asset('photos/'~hangout.organizer.image) }}" alt="Photo de profil"
+                                     class="miniPP">
+                            </a>
+                        </p>
+                    {% else %}
+                        <p>
+                            <a href="{{ path('app_user',{'id': hangout.organizer.id}) }}">
+                                {{ hangout.organizer.pseudo }}
+                            </a>
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="rowTicket">
+                    <p class="pTicket">Actions</p>
+                    <div class="actionsContainer">
+                        {#
+                        si la sortie est passée ou close ou annulé ou achivée
+                        #}
+                        {% if hangout.status.id == 3 or hangout.status.id == 4 or hangout.status.id == 5 or hangout.status.id == 6 or hangout.status.id == 7 and  hangout.organizer.id != app.user.id %}
+                            <a class="actionsList" href="{{ path('app_hangout_detail', {id: hangout.id}) }}"
+                               title="hangout  details">
+                                <i class="fa-regular fa-eye fa-lg"></i>
+                            </a>
                         {% else %}
-{#
+                            {#
                             //si l'organisateur n'est pas l'user
-#}
+                            #}
                             {% if  hangout.organizer.id != app.user.id %}
-                                <a href="{{ path('app_hangout_detail', {id: hangout.id}) }}" title="hangout  details">Afficher</a>
-{#
+                                <a class="actionsList" href="{{ path('app_hangout_detail', {id: hangout.id}) }}"
+                                   title="hangout  details">
+                                    <i class="fa-regular fa-eye fa-lg"></i>
+                                </a>
+                                {#
                                 //si l'user n'est pas inscrit dans la sortie et qu'il reste des places et que la date limit n'est pas passé .
-#}
+                                #}
                                 {% if app.user not in hangout.hangouts and hangout.hangouts|length < hangout.maxOfRegistration and hangout.registerDateLimit > date() %}
-                                    -<a href="{{ path('app_hangout_register',{'HangoutId': hangout.id}) }}" title="subrcibe to hangout">S'inscrire</a>
+                                    <a class="actionsList"
+                                       href="{{ path('app_hangout_register',{'HangoutId': hangout.id}) }}"
+                                       title="subrcibe to hangout">
+                                        <i class="fa-solid fa-person-circle-plus fa-xl"></i>
+                                    </a>
                                 {% endif %}
                                 {% if app.user in hangout.hangouts and app.user != hangout.organizer and hangout.registerDateLimit > date() %}
-                                    -<a href="{{ path('app_hangout_withdraw', {'HangoutId': hangout.id}) }}" title="withdraw">Se désister</a>
+                                    <a class="actionsList"
+                                       href="{{ path('app_hangout_withdraw', {'HangoutId': hangout.id}) }}"
+                                       title="withdraw">
+                                        <i class="fa-solid fa-person-circle-minus fa-xl"></i>
+                                    </a>
                                 {% endif %}
-                            {%else%}
-                                -<a href="{{ path('app_hangout_cancel', {'id': hangout.id}) }}" title="cancel hangout">Annuler</a>
-                                <a href="{{ path('app_hangout_edit', {id: hangout.id}) }}" title="hangout  update">Modifier</a>
+                            {% else %}
+                                <a class="actionsList" href="{{ path('app_hangout_cancel', {'id': hangout.id}) }}"
+                                   title="cancel hangout">
+                                    <i class="fa-solid fa-ban fa-lg"></i>
+                                </a>
+                                <a class="actionsList" href="{{ path('app_hangout_edit', {id: hangout.id}) }}"
+                                   title="hangout  update">
+                                    <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                                </a>
                             {% endif %}
-
                         {% endif %}
+                    </div>
+                </div>
+            </div>
 
-
-
-
-
-
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>>
+        {% endfor %}
     </div>
-
-
 {% endblock %}
+
+
+

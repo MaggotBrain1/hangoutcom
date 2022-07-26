@@ -4,11 +4,114 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: sans-serif;
-    background: linear-gradient(#651696, #4b279e, #3756ad);
-    color: #a06cd5;
     overflow: auto;
+    font-family: 'Open Sans', sans-serif;
+
 }
+#navA{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-image: url("../img/backgrounds/bgl.jpg");
+    height: 350px;
+    background-size: cover;
+}
+.logoSitAe{
+    border-radius: 100%;
+    height: 210px;
+    width:210px;
+    margin: 2%;
+}
+.logoSite{
+    border-radius: 100%;
+    height: 200px;
+    width:200px;
+    margin: 2%;
+}
+.infoContainer{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1%;
+}
+.rowHeadAction{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    color: white;
+    justify-content: space-between;
+    width: 150px;
+}
+.infoUserName{
+    font-family: 'Neonderthaw', cursive;
+    color:#3DD8FC;
+    font-size: 35px;
+    animation: flicker 1.5s infinite alternate;
+
+}
+.dateHead{
+    font-family: 'Neonderthaw', cursive;
+    color:#FD99EF;
+    font-size: 20px;
+}
+.subNav{
+    justify-content: flex-end;
+    margin-top: 80%;
+}
+
+.actionHeader{
+    color:white;
+    font-family: 'Neonderthaw', cursive;
+    text-decoration: none;
+    font-size: 22px;
+}
+.actionHeader:focus{
+    text-decoration: none;
+}
+.containerBtnSearch{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 50%;
+    margin-right: 2%;
+}
+#ticketContainer{
+    overflow: auto;
+    width: 90%;
+    height: 90%;
+    border-radius: 8px;
+}
+
+.ticketHangout{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90%;
+    height: 20%;
+    margin: 2%;
+    background-color: rgba(4, 75, 181, 0.8);
+    border-radius: 12px;
+}
+.rowTicket{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.pTicket{
+    color:#FD99EF;
+    font-size: 14px;
+
+}
+.actionsContainer{
+    display: flex;
+
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+
 body::-webkit-scrollbar {
     display: none;
 }
@@ -17,11 +120,11 @@ div::-webkit-scrollbar {
 }
 
 div::-webkit-scrollbar-track {
-    background: #9579d9; /* color of the tracking area */
+    background: #93AED6; /* color of the tracking area */
 }
 
 div::-webkit-scrollbar-thumb {
-    background-color: #7b2cbf; /* color of the scroll thumb */
+    background-color: rgba(78, 103, 166, 0.4); /* color of the scroll thumb */
     border-radius: 20px; /* roundness of the scroll thumb */
     border:none; /* creates padding around scroll thumb */
 }
@@ -66,11 +169,7 @@ footer>.container {
 h1{
     margin-bottom: 1%;
 }
-h1,h2{
-    font-family: 'Neonderthaw', cursive;
-    font-weight: bold;
-    color: #09617D;
-}
+
 .formContainer{
     display: flex;
     flex-direction: row;
@@ -89,6 +188,15 @@ h1,h2{
     width: 100%;
     justify-content: center;
 }
+.miniPP{
+    height: 36px;
+    width: 36px;
+    border-radius: 100%;
+}
+.actionsList{
+
+    color: white;
+}
 
 .form-floating > input, .form-floating > select{
     background-color: #F9A926;
@@ -99,6 +207,7 @@ h1,h2{
     height: 55px;
     color : rgba(9,97,100);
     border-radius: 8px;
+    color: white;
 }
 #hangout_form_hangoutInformations{
     height: 90px;
@@ -109,12 +218,11 @@ h1,h2{
 }
 .btnContainer{
     margin: 10px;
-
     height: 55px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-     width: 70%;
+    width: 70%;
     align-items: center;
 }
 #surCoucheBtn{
@@ -129,8 +237,9 @@ h1,h2{
 .btnAddPlace{
     border: none;
     background-color: transparent;
-    color: #09617d;
-    margin-left: 10px;
+    color: white;
+    height: 30px;
+    width: 30px;
 }
 .detailCol{
     display: flex;
@@ -182,53 +291,38 @@ h1,h2{
     margin-left: 4% ;
     margin-top: 2%;
 }
-.topInfoPage{
-    align-self: flex-end;
-    margin-right: 2%;
+
+table{
+    width: 80%;
+    color: #DDDDDD;
+    background-color: rgba(1, 119, 236, 0.2);
+    border: none;
+}
+td,tr{
+    border: none;
+}
+
+
+thead{
+    background-image: url("../img/backgrounds/headTab.jpg");
+    background-position: center;
 }
 table{
-    background-color: #4b279e;
-    background-color: rgba(75, 39, 158,0.2);
-
-}
-#tabScroll{
-    overflow: auto;
-    width: 100%;
-    height: 400px;
-
-}
-.txtThNbor{
-    border:none;
-}
-thead{
-    background-color: #471671;
-}
-th,td{
-    border-left: transparent  3px solid;
-    border-top: none;
-    border-bottom: none;
-}
-td{
     text-align: center;
 }
+
 .txtTh{
-    font-size: 35px;
+    font-size: 19px;
+
 }
 #nameHang{
-    font-size: 22px;
+    font-size: 18px;
+    border: none;
 }
-th{
-    font-family: 'Allura', cursive;
-    font-weight: bold;
+th,td{
+    color: white;
+}
 
-}
-.noBorder{
-    border: transparent;
-
-}
-th{
-    border-bottom: none;
-}
 .newHang{
     display: flex;
     text-decoration: none;
@@ -242,10 +336,6 @@ th{
     margin: 1%;
 }
 
-a:hover{
-    background-color: #04617c;
-    color: white;
-}
 
 .neonText {
     color: #fff;
@@ -301,7 +391,9 @@ h1 {
     align-items: center;
     width: 100%;
     height: 70px;
-    background-color: #6247aa;
+    margin-top: -70px;
+    background-color: rgba(4, 75, 181, 0.8);
+    color:white;
 }
 .secFilter{
     display: flex;
@@ -312,10 +404,7 @@ h1 {
 .headFilterCheck{
     display: flex;
     flex-direction: column;
-    width: 25%;
     align-content: center;
-    background-color: #6247aa;
-    background-color: rgba(98, 71, 170, 0.4);
     border-radius: 6px;
     padding: 10px;
     margin: 1%;
@@ -323,12 +412,12 @@ h1 {
 .headFilter>.rowInpt{
     justify-content: space-around;
     align-items: center;
-    color: #2d0a54;
+    color: white;
 }
 .headFilterCheck>.rowInpt{
     justify-content: flex-start;
     align-content: center;
-    color: #2a0152;
+    font-size: 18px;
     width: 100%;
 }
 #filter_name::placeholder{
@@ -338,21 +427,23 @@ h1 {
     height: 35px;
     width: 300px;
     text-align: center;
-    background-color: #40288f;
+    background-color: rgba(1, 107, 229, 0.6);
     border: none;
     border-radius: 8px;
+    color: white;
 }
 .txtCheckFltr{
     margin-left: 10px;
 }
-.ContainerBtnSearch{
-}
+
 .btnSerch{
-    border:none;
-    height:50px;
-    width: 50px;
+    height:30px;
+    width: 30px;
     border-radius: 100%;
-    background-color: #7b2cbf;
+    border: white 2px solid;
+    background-color: transparent;
+    color: white;
+    text-align: center;
 }
 
 .hangoutCanceld{

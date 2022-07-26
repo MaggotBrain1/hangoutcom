@@ -27,14 +27,14 @@ class FilterType extends AbstractType
                 'label'=>false,
                 'choice_label' => 'name',
                 'required' => false,
-                'placeholder' => '--Campus--',
-                'attr' => ['class' => 'inptFilter effetneon'],
+                'placeholder' => 'Quel campus ?',
+                'attr' => ['class' => 'inptFilter'],
             ])
             ->add('name', SearchType::class, [
                 'required' => false,
                 'label'=>false,
                 'attr' => [
-                    'class' => 'inptFilter neonText',
+                    'class' => 'inptFilter',
                     'placeholder' => 'Le nom de la sortie contient',
                 ],
             ])
@@ -43,7 +43,10 @@ class FilterType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'label'=>false,
-                'attr' => ['class' => 'inptFilter effetneon'],
+                'attr' => [
+                    'class' => 'inptFilter',
+                    'color' => 'white',
+                ],
 
             ])
             ->add('endDate', DateType::class, [
@@ -51,7 +54,7 @@ class FilterType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'label'=>false,
-                'attr' => ['class' => 'inptFilter effetneon'],
+                'attr' => ['class' => 'inptFilter'],
             ])
 
             ->add('isOrganizer', CheckboxType::class, [

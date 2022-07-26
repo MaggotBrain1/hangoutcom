@@ -1,8 +1,14 @@
-  <div class="topInfoPage">
-        <div>
-            <p>Date du jour :  {{ "now"|date("m/d/Y") }}</p>
-        </div>
-        <div>
-            <p>Participant : {{ app.user.name }}</p>
-        </div>
+<div class="infoContainer effetneon">
+    <div class="rowHeadAction">
+        <a class="actionHeader" href="{{ path("app_profile",{'id' : app.user.id}) }}" title="profile">
+            <i class="fa-regular fa-user fa-lg"></i>
+        </a>
+        <p class="infoUserName">{{ app.user.name }}</p>
     </div>
+    <div class="rowHeadAction">
+        <a class="actionHeader" href="{{ path("app_logout") }}" title="Home">
+            <i class="fa-solid fa-arrow-right-from-bracket  fa-lg"></i>
+        </a>
+        <p class="dateHead">{{ "now"|date("m/d/Y", "Europe/Paris") }}</p>
+    </div>
+</div>

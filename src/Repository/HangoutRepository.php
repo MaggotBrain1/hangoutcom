@@ -48,7 +48,7 @@ class HangoutRepository extends ServiceEntityRepository
         $queryFilter = $this->createQueryBuilder('h')
             ->orderBy('h.startTime', 'ASC');
         if($campus){
-            $queryFilter->andWhere('h.campusOrganizerSite =:campus')
+            $queryFilter->where('h.campusOrganizerSite =:campus')
                 ->setParameter('campus', $campus);
         }
         if($name){
@@ -79,15 +79,15 @@ class HangoutRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
         if ($pastHangout) {
-            $queryFilter->where('h.Status = 5')
-                ->orderBy('h.id', 'ASC');
+            $queryFilter->andWhere('h.Status = 5')
+                ->orderBy('h.startTime', 'ASC');
         }
 
         $res = $queryFilter->getQuery();
         return $res->getResult();
     }
 
-        /**
+    /**
      * @return Hangout[] Return un tableau de sortie dont l'user n'est pas inscrit
      */
     public function findByStatusCanceled($idUser): array
@@ -100,50 +100,18 @@ class HangoutRepository extends ServiceEntityRepository
             ->andWhere('u.id = :idUser')
             ->orderBy('h.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /*
      * on affiche les sortie en filtrant les sortie finit depuis un moi */
     public function findHangoutAvaible(): array
     {
-        $date = null;
         return $this->createQueryBuilder('h')
             ->where('h.Status <>  7')
-            ->orderBy('h.id', 'ASC')
+            ->orderBy('h.startTime', 'ASC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
-    /*
-     * Un user est incrit a une sortie
-     * Une sortie est annulé
-     * on récupere les sortie annulé au quelle l'user a inscrit */
-
-//    /**
-//     * @return Hangout[] Returns an array of Hangout objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('h')
-//            ->andWhere('h.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('h.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Hangout
-//    {
-//        return $this->createQueryBuilder('h')
-//            ->andWhere('h.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

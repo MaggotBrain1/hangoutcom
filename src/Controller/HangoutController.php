@@ -11,6 +11,7 @@ use App\Form\HangoutFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -252,31 +253,6 @@ class HangoutController extends AbstractController
         ]);
     }
 
-    public function updateStatusOfHangouts($allHangouts, StatusRepository $statusRepository, EntityManagerInterface $em){
-
-        foreach ($allHangouts as $hg){
-            $startDate = $hg->getStartTime()->format('Y-m-d');
-            $today = date("Y-m-d");
-
-            if ($startDate == $today) {
-                $hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));
-            }
-            if($today >= date('Y-m-d', strtotime($startDate. ' + 1 day')) &&
-                date('Y-m-d', strtotime($startDate. ' + 1 day')) <= date('Y-m-d', strtotime($startDate. ' + 1 month')) ){
-                $hg->setStatus($statusRepository->find(Status::STATUS_PAST));
-            }
-            if($today >= date('Y-m-d', strtotime($startDate. ' + 1 months')) ){
-                $hg->setStatus($statusRepository->find(Status::STATUS_ARCHIVED));
-
-            }
-            if($today >= $hg->getRegisterDateLimit()->format('Y-m-d')){
-                $hg->setStatus($statusRepository->find(Status::STATUS_CLOSED));
-            }
-            $em->persist($hg);
-            $em->flush();
-        }
-
-    }
     public function listOfPlaceCityAction(Request $request, PlaceRepository $placeRepository,EntityManagerInterface $em )
     {
 
@@ -304,40 +280,79 @@ class HangoutController extends AbstractController
         // [{"id":"3","name":"Treasure Island"},{"id":"4","name":"Presidio of San Francisco"}]
     }
 
-/*    #[Route('/hangout/placeByCity', name: 'testToto', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_USER')]
-    public function testToto(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
-    {
-        $hangout = new Hangout();
-        $currentUser = $this->getUser();
+    /*    #[Route('/hangout/placeByCity', name: 'testToto', methods: ['GET', 'POST'])]
+        #[IsGranted('ROLE_USER')]
+        public function testToto(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
+        {
+            $hangout = new Hangout();
+            $currentUser = $this->getUser();
 
-        $hangout->setOrganizer($currentUser);
-        $campusOrganizerSite = $currentUser->getCampus();
-        $hangout->setCampusOrganizerSite($campusOrganizerSite);
-        $hangoutForm = $this->createForm(HangoutFullFormType::class, $hangout, ['defaultCampus' => $campusOrganizerSite]);
-        $hangoutForm->handleRequest($request);
+            $hangout->setOrganizer($currentUser);
+            $campusOrganizerSite = $currentUser->getCampus();
+            $hangout->setCampusOrganizerSite($campusOrganizerSite);
+            $hangoutForm = $this->createForm(HangoutFullFormType::class, $hangout, ['defaultCampus' => $campusOrganizerSite]);
+            $hangoutForm->handleRequest($request);
 
-        if ($hangoutForm->isSubmitted() && $hangoutForm->isValid()) {
-            $hangout->setStartTime($hangoutForm["startTime"]->getData());
-            $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
+            if ($hangoutForm->isSubmitted() && $hangoutForm->isValid()) {
+                $hangout->setStartTime($hangoutForm["startTime"]->getData());
+                $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
 
-            if ($request->request->get('submit') === 'published') {
-                $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
-            } else {
-                $hangout->setStatus($statusRepository->find(Status::STATUS_CREATED));
+                if ($request->request->get('submit') === 'published') {
+                    $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
+                } else {
+                    $hangout->setStatus($statusRepository->find(Status::STATUS_CREATED));
+                }
+
+                $em->persist($hangout);
+                $em->flush();
+                $hangoutId = $hangout->getId();
+                $this->registerToHangout($hangoutId, $em);
+                $this->addFlash('success', 'Hangout successfully added .');
+                return $this->redirectToRoute('app_home');
             }
 
-            $em->persist($hangout);
-            $em->flush();
-            $hangoutId = $hangout->getId();
-            $this->registerToHangout($hangoutId, $em);
-            $this->addFlash('success', 'Hangout successfully added .');
-            return $this->redirectToRoute('app_home');
-        }
+            return $this->render('hangout/editHangoutFullForm.html.twig', [
+                'form' => $hangoutForm->createView(),
+            ]);
+        }*/
 
-        return $this->render('hangout/editHangoutFullForm.html.twig', [
-            'form' => $hangoutForm->createView(),
-        ]);
-    }*/
+    public function updateStatusOfHangouts($allHangouts, StatusRepository $statusRepository, EntityManagerInterface $em){
+        foreach ($allHangouts as $hg){
+            $hangoutClone = clone($hg);
+            $startDate = $hg->getStartTime();
+            $now = (new \DateTime("now")); // renvoi la date/h/m/s du jour
+            $durationH = $hg->getDuration()->format('H');// on récupere les minutes de la durée
+            $durationM = $hg->getDuration()->format('i');//on récupere les heures de la durée
+            $endDate = clone($startDate);// on clone $startDate pour que les modification ne l'affecte pas directement.
+            $endDate->modify("+{$durationM} minutes");// on ajoute les minutes à la date de début
+            $endDate->modify("+{$durationH} hour");// on ajoute les heures à la date de départ
+            // $endDate === la date et heures de la sortie additionnée au temps de durée de la sorite
+            $oneMothMore = clone($startDate);
+            $oneMothMore->modify('+1 month');
+
+            switch($hg->getStatus()->getId()){
+                case ($startDate <= $now && $now < $endDate) :
+                    if ($hg->getStatus()->getId() != Status::STATUS_IN_PROGRESS){
+                        $hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));
+                    }
+                    break;
+                case ($now > $endDate && $now < $oneMothMore ) :
+                    if($hg->getStatus()->getId() != Status::STATUS_PAST){
+                        $hg->setStatus($statusRepository->find(Status::STATUS_PAST));
+                    }
+                    break;
+                case ($now > $oneMothMore):
+                    if ($hg->getStatus()->getId() != Status::STATUS_ARCHIVED) {
+                        $hg->setStatus($statusRepository->find(Status::STATUS_ARCHIVED));
+                    }
+                    break;
+            }
+
+            if ($hangoutClone->getStatus()->getId() != $hg->getStatus()->getId()){
+                $em->persist($hg);
+                $em->flush();
+            }
+        }
+    }
 
 }
