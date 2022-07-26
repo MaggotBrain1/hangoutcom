@@ -43,20 +43,20 @@
 <header>
     {% include("nav/nav.html.twig") %}
 </header>
-<div>
-    <span>
+
+
+<main>
+    <div class="text-center">
+    <span >
 {# read and display all flash messages #}
         {% for  message in app.flashes('fail') %}
 
             <div class="flash-fail">
             {{ message }}
         </div>
-
         {% endfor %}
         </span>
-</div>
-
-<main>
+    </div>
     {% block main %}{% endblock %}
 </main>
 

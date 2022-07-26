@@ -3,6 +3,7 @@
 {% block title %}Hello HangoutController!{% endblock %}
 
 {% block main %}
+
     <div class="containerFormFilter">
         {{ form_start(filterForm) }}
         <div class="headFilter">
@@ -31,6 +32,18 @@
                     </svg>
                 </button>
             </div>
+        </div>
+        <div class="text-center">
+    <span >
+{# read and display all flash messages #}
+        {% for  message in app.flashes('fail') %}
+
+            <div class="flash-fail">
+            {{ message }}
+        </div>
+
+        {% endfor %}
+        </span>
         </div>
         <!-- Modal -->
         <div class="modal fade" id="modalMoreSearch" tabindex="-1" aria-labelledby="exampleModalLabel"

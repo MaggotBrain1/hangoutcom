@@ -5,9 +5,14 @@
 {% block main %}
     <h1 class="container text-center">Gérer les villes</h1>
     <h2 class="text-left">Filtrer les villes</h2>
-    <p class="text-left">Le nom contient :</p>
-    <input type="text" name="search" placeholder="HER">
-    <button type="submit">Rechercher</button>
+ {{ form_start(form_filtered) }}
+    {{ form_widget(form_filtered) }}
+    <button>Rechercher</button>
+    {{ form_end(form_filtered) }}
+    {% for city in filteredCities %}
+    {{ city.name }}
+        {{ city.zipCode }}
+    {% endfor %}
 <table class="table">
     <thead class="sticky-top">
     <tr>

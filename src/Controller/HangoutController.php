@@ -235,7 +235,12 @@ class HangoutController extends AbstractController
     {
         $hangout = $hangoutRepository->find($id);
         $currentUser = $this->getUser();
-        if ($hangout->getStatus()->getLabel() === 'annulée' || $currentUser !== $hangout->getOrganizer()) {
+        if ($hangout->getStatus()->getId() === Status::STATUS_CANCELED && $currentUser === $hangout->getOrganizer()  ) {
+            $this->addFlash('fail','La sortie est déjà annulée!');
+            return $this->redirectToRoute('app_home');
+        }
+        else if($currentUser !== $hangout->getOrganizer()){
+            $this->addFlash('fail','Vous n\'avez pas les droits pour accéder à cette page!');
             return $this->redirectToRoute('app_home');
         }
         $form = $this->createForm(HangoutCancelType::class, $hangout);

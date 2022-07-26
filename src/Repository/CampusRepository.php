@@ -39,6 +39,18 @@ class CampusRepository extends ServiceEntityRepository
         }
     }
 
+    public function getFilteredCampusByName(string $name)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.name LIKE :name')
+            ->setParameter('name','%'.$name.'%');
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+
+        return $result;
+
+    }
+
 //    /**
 //     * @return Campus[] Returns an array of Campus objects
 //     */
