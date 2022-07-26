@@ -46,9 +46,14 @@ class HangoutRepository extends ServiceEntityRepository
 
     public function findByFilter($campus,$name,$startDate,$endDate,$imOrginizer,$imIn,$imNotIn,$pastHangout,$user){
         $queryFilter = $this->createQueryBuilder('h')
+            ->leftJoin('h.Status','s')
+            ->leftJoin('h.hangouts','u') // hangouts correpond à la collection de users dans la table Hangout
+            ->addSelect('s','u')
+            ->where('s <> 6')
+            ->andWhere('s <> 7')
             ->orderBy('h.startTime', 'ASC');
         if($campus){
-            $queryFilter->where('h.campusOrganizerSite =:campus')
+            $queryFilter->andWhere('h.campusOrganizerSite =:campus')
                 ->setParameter('campus', $campus);
         }
         if($name){
@@ -71,11 +76,13 @@ class HangoutRepository extends ServiceEntityRepository
         }
 
         if ($imNotIn and !$imIn) {
-            $queryFilter->join('h.hangouts', 'u')
-                ->join('h.Status', 's')
+            $queryFilter->leftJoin('h.hangouts', 'u')
+                ->leftJoin('h.Status', 's')
+                ->addSelect('s','u')
                 ->andWhere('u.id <> :user')
                 ->andWhere('h.organizer <> :user')
                 ->andWhere('s.id <> 7')
+                ->andWhere('s.id <> 6')
                 ->setParameter('user', $user);
         }
         if ($pastHangout) {
@@ -107,12 +114,17 @@ class HangoutRepository extends ServiceEntityRepository
      * on affiche les sortie en filtrant les sortie finit depuis un moi */
     public function findHangoutAvaible(): array
     {
-        return $this->createQueryBuilder('h')
-            ->where('h.Status <>  7') // ne pas inclure les sorties archivées
-            ->andWhere('h.Status <> 6') // ne pas inclure les sorties annulées
-            ->orderBy('h.startTime', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('h');
+        $qb->leftJoin('h.hangouts','u')
+        ->addSelect('u')   ;
+           $qb->andWhere('h.Status <>  7') ;// ne pas inclure les sorties archivées
+            $qb->andWhere('h.Status <> 6'); // ne pas inclure les sorties annulées
+            $qb->orderBy('h.startTime', 'ASC');
+            $query = $qb->getQuery();
+            $result = $query->getResult();
+
+        return $result;
     }
+
 
 }

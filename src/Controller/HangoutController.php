@@ -66,7 +66,6 @@ class HangoutController extends AbstractController
         return $this->render('hangout/hangoutList.html.twig', [
             'hangouts' => $hangouts,
             'filterForm' => $filterForm->createView(),
-            'subscribe'=>$hangoutRepository,
         ]);
     }
     #[Route('/hangout/detail/{id}', name: 'app_hangout_detail', methods: ['GET', 'POST'])]

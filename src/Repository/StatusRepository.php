@@ -39,6 +39,17 @@ class StatusRepository extends ServiceEntityRepository
         }
     }
 
+    public function reqGetStatus()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.hangouts','h')
+            ->addSelect('h');
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+
+        return $result;
+    }
+
 //    /**
 //     * @return Status[] Returns an array of Status objects
 //     */

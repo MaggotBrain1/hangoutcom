@@ -8,7 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateStatusHangouts
 {
+
     public function updateStatusOfHangouts($allHangouts, StatusRepository $statusRepository, EntityManagerInterface $em){
+        $allStatus = $statusRepository->reqGetStatus();
         foreach ($allHangouts as $hg){
             $hangoutClone = clone($hg);
             $startDate = $hg->getStartTime();
@@ -22,7 +24,7 @@ class UpdateStatusHangouts
             $oneMothMore = clone($startDate);
             $oneMothMore->modify('+1 month');
 
-            switch($hg->getStatus()->getId()){
+            switch($allStatus){
                 case ($startDate <= $now && $now < $endDate) :
                     if ($hg->getStatus()->getId() != Status::STATUS_IN_PROGRESS){
                         $hg->setStatus($statusRepository->find(Status::STATUS_IN_PROGRESS));
@@ -42,9 +44,10 @@ class UpdateStatusHangouts
 
             if ($hangoutClone->getStatus()->getId() != $hg->getStatus()->getId()){
                 $em->persist($hg);
-                $em->flush();
+
             }
         }
+        $em->flush();
     }
 
 }
