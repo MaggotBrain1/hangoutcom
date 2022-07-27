@@ -25,7 +25,6 @@ class EditProfileType extends AbstractType
             ->add('pseudo',TextType::class,[
                 'label'=>false,
                 'required'=>false,
-
             ])
             ->add('name',TextType::class,[
                 'label'=>false,
@@ -50,17 +49,11 @@ class EditProfileType extends AbstractType
             ->add('password',PasswordType::class,[
                 'label'=>false,
                 'required'=>false,
-
-
             ])
             ->add('plainPassword',PasswordType::class,[
                 'mapped'=>false,
                 'label'=>false,
                 'required'=>false,
-
-
-
-
             ],
             )
             /*->add('plainPassword',RepeatedType::class,

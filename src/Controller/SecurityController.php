@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Form\EditProfileType;
 use App\Repository\UserRepository;
-use Cassandra\Type\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +47,8 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/profile', name: 'app_profile')]
-    public function profile(  UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher,SluggerInterface $slugger): Response
+    #[IsGranted('ROLE_USER')]
+    public function profile(UserRepository $userRepository,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher,SluggerInterface $slugger): Response
     {
         $user = $this->getUser();
         if(!$user){

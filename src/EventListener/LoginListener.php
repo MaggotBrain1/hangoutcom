@@ -19,10 +19,8 @@ class LoginListener
     {
         // Get the User entity.
         $user = $event->getAuthenticationToken()->getUser();
-
         // Update your field here.
         $user->setLastLogin(new \DateTime());
-
         // Persist the data to database.
         $this->em->persist($user);
         $this->em->flush();

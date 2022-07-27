@@ -109,21 +109,19 @@ class HangoutRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
     /*
      * on affiche les sortie en filtrant les sortie finit depuis un moi */
     public function findHangoutAvaible(): array
     {
         $qb = $this->createQueryBuilder('h');
         $qb->leftJoin('h.hangouts','u')
-        ->addSelect('u')   ;
-           $qb->andWhere('h.Status <>  7') ;// ne pas inclure les sorties archivées
+             ->addSelect('u')   ;
+            $qb->andWhere('h.Status <>  7') ;// ne pas inclure les sorties archivées
             $qb->andWhere('h.Status <> 6'); // ne pas inclure les sorties annulées
             $qb->orderBy('h.startTime', 'ASC');
             $query = $qb->getQuery();
-            $result = $query->getResult();
 
-        return $result;
+        return $query->getResult();
     }
 
 

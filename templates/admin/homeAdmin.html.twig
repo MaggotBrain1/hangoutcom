@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home ADMIN{% endblock %}
+
+{% block main %}
+
+        <h1 class="effetneon">Que voulez-faire ?</h1>
+        <div class="choicesContainer">
+            <div class="choicesSubContainer">
+                <a href="{{ path("app_register") }}">
+                    Ajouter un nouvel Utilisateur
+                    <i class="fa-solid fa-address-card fa-xl"></i>
+                </a>
+            </div>
+            <div class="choicesSubContainer">
+                <a href="{{ path("app_admin_manage_campus") }}">
+                    Ajouter un nouveau  campus
+                    <i class="fa-solid fa-school fa-xl"></i>
+                </a>
+            </div>
+            <div class="choicesSubContainer">
+                <a href="{{ path("app_admin_manage_city") }}">
+                    Ajouter une nouvelle Ville
+                    <i class="fa-solid fa-map-location-dot fa-xl"></i>
+                </a>
+            </div>
+        </div>
+
+{% endblock %}

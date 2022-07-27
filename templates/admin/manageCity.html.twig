@@ -3,44 +3,55 @@
 {% block title %}Manage City{% endblock %}
 
 {% block main %}
-    <h1 class="container text-center">Gérer les villes</h1>
-    <h2 class="text-left">Filtrer les villes</h2>
- {{ form_start(form_filtered) }}
-    {{ form_widget(form_filtered) }}
-    <button>Rechercher</button>
+    <h1 class="effetneon">Gérer les villes</h1>
+    <h2 class="txtCampus">Filtrer les villes</h2>
+    <div class="formFilterCampusContainer">
+    {{ form_start(form_filtered) }}
+    <div class="formFilterCampusSubContainer">
+        {{ form_label(form_filtered.name) }}
+        {{ form_widget(form_filtered.name) }}
+        <div>
+            <button type="submit" class="btnFilterCamp">Rechercher</button>
+        </div>
+    </div>
     {{ form_end(form_filtered) }}
-    {% for city in filteredCities %}
-    {{ city.name }}
-        {{ city.zipCode }}
-    {% endfor %}
-<table class="table">
-    <thead class="sticky-top">
-    <tr>
-        <th id="campusName" scope="row" class="txtTh neonText">Ville</th>
-        <th id="campusZipCode" scope="row" class="txtTh neonText">Code Postal</th>
-        <th id="actions" scope="row" class="txtTh neonText">Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for city in cities %}
-    <tr>
-            <td>{{ city.name }}</td>
-            <td>{{ city.zipCode }}</td>
-        <td><a href="#" class="text-decoration-none">Modifier</a> -
-            <a href="#" class="text-decoration-none">Supprimer</a></td>
-    </tr>
-    {% endfor %}
-    {{ form_start(form_city) }}
-    <tr>
-        <td>{{ form_row(form_city.name ) }}</td>
-        <td>{{ form_row(form_city.zipCode) }}</td>
-        <td><button type="submit">Ajouter</button></td>
 
-    </tr>
-    {{ form_end(form_city) }}
-    </tbody>
+    <table class="tableCampus">
+        <thead class="sticky-top">
+        <tr>
+            <th class="labelTabCamp" scope="row">Ville</th>
+            <th class="labelTabCamp"  scope="row" >Code Postal</th>
+            <th class="labelTabAction"  scope="row">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for city in cities %}
+            <tr id="trTabCamp">
+                <td class="tdName" >{{ city.name }}</td>
+                <td class="tdName" >{{ city.zipCode }}</td>
+                <td class="tdAction">
+                    <a href="#" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="#" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr class="trTabCamp">
+        {{ form_start(form_city) }}
+            <td class="tdName">
+                {{ form_row(form_city.name ) }}
+            </td>
+            <td class="tdName">{{ form_row(form_city.zipCode) }}</td>
+            <td class="tdAction">
+                <button class="btnTdAction " type="submit">
+                    <i class="fa-solid fa-circle-plus fa-xl"></i>
+                </button>
+            </td>
 
-</table>
+        </tr>
+        {{ form_end(form_city) }}
+        </tbody>
+
+    </table>
 
 
 {% endblock %}

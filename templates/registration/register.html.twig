@@ -3,12 +3,26 @@
 {% block title %}Register{% endblock %}
 
 {% block main %}
-    <h1>Register</h1>
-
+    <h1 class="effetneon">Register</h1>
     {{ form_start(registrationForm) }}
-
-    {{ form_widget(registrationForm) }}
-
-    <button type="submit" class="btn">Register</button>
+    <div class="formRegisterContainer">
+        <div class="formRegisterSubContainer">
+             {{ form_row(registrationForm.pseudo) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.name) }}
+                {{ form_row(registrationForm.lastName) }}
+        </div>
+        <div class="formRegisterSubContainer">
+                {{ form_row(registrationForm.phone) }}
+                {{ form_row(registrationForm.campus) }}
+                {{ form_row(registrationForm.plainPassword) }}
+            <div class="btnContainerRegister">
+                {{ form_row(registrationForm.agreeTerms) }}
+                <button type="submit" class="btn">Register</button>
+            </div>
+        </div>
+    </div>
     {{ form_end(registrationForm) }}
+
+
 {% endblock %}

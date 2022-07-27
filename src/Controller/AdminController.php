@@ -12,6 +12,7 @@ use App\Form\CityType;
 use App\Repository\CampusRepository;
 use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +20,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin/manage/city', name: 'app_admin_manage_city')]
-    public function manageCity(CityRepository $cityRepository, EntityManagerInterface $entityManager, Request $request): Response
+    #[Route('/admin', name: 'app_admin')]
+    #[IsGranted('ROLE_USER')]
+    public function HomeAdmin(): Response
     {
 
+        return $this->render('admin/homeAdmin.html.twig', [
+
+        ]);
+    }
+
+    #[Route('/admin/manage/city', name: 'app_admin_manage_city')]
+    #[IsGranted('ROLE_USER')]
+    public function manageCity(CityRepository $cityRepository, EntityManagerInterface $entityManager, Request $request): Response
+    {
         $user = $this->getUser();
         if(!$user)
         {
@@ -55,7 +66,6 @@ class AdminController extends AbstractController
             $name = $formFilteredCityType->get('name')->getData();
             $filteredCities = $cityRepository->getFilteredCity($name);
         }
-
         return $this->render('admin/manageCity.html.twig', [
             'form_city'=> $formCityType->createView(),
             'form_filtered'=> $formFilteredCityType->createView(),
@@ -66,6 +76,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/manage/campus', name: 'app_admin_manage_campus')]
+    #[IsGranted('ROLE_USER')]
     public function manageCampus(CampusRepository $campusRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $this->getUser();

@@ -11,8 +11,8 @@ use App\Form\HangoutFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
+use App\services\MailService;
 use App\services\UpdateStatusHangouts;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,20 +20,29 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 class HangoutController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
-    public function index(HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository,UpdateStatusHangouts $updateStatusHangouts): Response
+    public function index(AccessDecisionManagerInterface $accessDecisionManager  ,HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository,UpdateStatusHangouts $updateStatusHangouts,
+    MailService $mailer): Response
     {
         $user = $this->getUser();
-
         if($user == null)
         {
             $this->addFlash('fail','Vous devez être connecté pour voir les sorties!');
             return $this->redirectToRoute('app_login');
         }
+        //TODO fonctionnel mais pas propre, trouver un moyen de config User Admin symfony (voir doc)
+        $token = new UsernamePasswordToken($user,'none',$user->getRoles());
+        if($accessDecisionManager->decide($token, (array)'ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin');
+        }
+
+
 
         //à sa connection on affiche à l'user un message l'avertissant de l'annulation
         //d'une sortie à la quelle il était inscrit
