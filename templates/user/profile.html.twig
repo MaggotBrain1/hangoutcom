@@ -20,49 +20,49 @@
     <div class="" >
 
 
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6">{{ form_label(editUserForm.pseudo) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.pseudo) }}</div>
+            <div class="col-6 ">{{ form_widget(editUserForm.pseudo) }}</div>
         </div>
 
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6">{{ form_label(editUserForm.name) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.name) }}</div>
+            <div class="col-6 ">{{ form_widget(editUserForm.name) }}</div>
         </div>
 
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6">{{ form_label(editUserForm.lastName) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.lastName) }}</div>
+            <div class="col-6">{{ form_widget(editUserForm.lastName) }}</div>
         </div>
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6">{{ form_label(editUserForm.phone) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.phone) }}</div>
+            <div class="col-6">{{ form_widget(editUserForm.phone) }}</div>
         </div>
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6">{{ form_label(editUserForm.email) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.email) }}</div>
+            <div class="col-6">{{ form_widget(editUserForm.email) }}</div>
         </div>
-        <div class="row">
+        <div class="row mx-auto p-2">
             {#    <div class="col-6">{{ form_label(editUserForm.plainPassword) }} :</div>
         <div class="col-6">{{ form(editUserForm.plainPassword) }}</div> #}
             <div class="col-6">{{ form_label(editUserForm.password) }} :</div>
-            <div class="col-6 no-gutters">{{ form_row(editUserForm.password) }}</div>
+            <div class="col-6 no-gutters">{{ form_widget(editUserForm.password) }}</div>
         </div>
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6 ">{{ form_label(editUserForm.plainPassword) }} :</div>
-            <div class="col-6 no-gutters">{{ form_row(editUserForm.plainPassword) }}</div>
+            <div class="col-6 no-gutters">{{ form_widget(editUserForm.plainPassword) }}</div>
         </div>
-        <div class="row">
+        <div class="row mx-auto p-2">
             <div class="col-6">{{ form_label(editUserForm.campus) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.campus) }}</div>
+            <div class="col-6">{{ form_widget(editUserForm.campus) }}</div>
         </div>
-        <div class="row">
+        <div class="row mx-auto p-2">
            {% if app.user.image == null %}
-        {{ form_label(editUserForm.image) }}
+            <div class="col-6">{{ form_label(editUserForm.image) }} :</div>
     {% else %}
-    {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
+        <div class="col-6">{{ form_label(editUserForm.image,'modifier ma photo de profil') }} :</div>
     {% endif %}
-    {{ form_row(editUserForm.image) }}
+            <div class="col-6">{{ form_widget(editUserForm.image) }}</div>
     </div>
         <div class="text-center">
 

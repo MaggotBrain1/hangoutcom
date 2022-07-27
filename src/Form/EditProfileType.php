@@ -23,32 +23,30 @@ class EditProfileType extends AbstractType
     {
         $builder
             ->add('pseudo',TextType::class,[
-                'label'=>false,
                 'required'=>false,
 
             ])
             ->add('name',TextType::class,[
-                'label'=>false,
+
                 'required'=>false,
 
             ])
             ->add('lastName',TextType::class,[
-                'label'=>false,
+
                 'required'=>false,
 
             ])
             ->add('phone',TextType::class,[
-                'label'=>false,
+
                 'required'=>false,
 
             ])
             ->add('email',TextType::class,[
-                'label'=>false,
+
                 'required'=>false,
 
             ])
             ->add('password',PasswordType::class,[
-                'label'=>false,
                 'required'=>false,
                 'mapped'=>false,
 
@@ -56,7 +54,6 @@ class EditProfileType extends AbstractType
             ])
             ->add('plainPassword',PasswordType::class,[
                 'mapped'=>false,
-                'label'=>false,
                 'required'=>false,
 
 
