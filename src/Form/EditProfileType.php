@@ -50,6 +50,7 @@ class EditProfileType extends AbstractType
             ->add('password',PasswordType::class,[
                 'label'=>false,
                 'required'=>false,
+                'mapped'=>false,
 
 
             ])
