@@ -2,9 +2,9 @@ $campusToEdit = document.querySelectorAll('#edit_campus');
 let $cptCampus = 0;
 function modif(event)
 {
-    const id = event.currentTarget.getAttribute("title");
-    const campus = event.currentTarget.parentNode.parentNode.firstChild.firstChild.valueOf().value
-    event.currentTarget.href = "/hangoutcom/public/campus/edit/" + id +"/"+  campus
+        const id = event.currentTarget.getAttribute("title");
+        const campus = event.currentTarget.parentNode.parentNode.firstChild.firstChild.valueOf().value
+        event.currentTarget.href = "/hangoutcom/public/campus/edit/" + id +"/"+  campus
 }
 function edit(e) {
     $cptCampus++;
