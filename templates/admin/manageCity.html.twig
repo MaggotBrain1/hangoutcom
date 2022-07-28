@@ -25,16 +25,29 @@
         </tr>
         </thead>
         <tbody>
-        {% for city in cities %}
+{% if filteredCities == null %}
+        {% for city in cities   %}
             <tr id="trTabCamp">
                 <td class="tdName" >{{ city.name }}</td>
                 <td class="tdName" >{{ city.zipCode }}</td>
                 <td class="tdAction">
-                    <a href="#" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
+                    <a href="#" id="city_edit" title="{{ city.id }}"  class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{{ path('app_city_delete',{'id' : city.id}) }}" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         {% endfor %}
+{% else %}
+{% for city in filteredCities   %}
+    <tr id="trTabCamp">
+        <td class="tdName" >{{ city.name }}</td>
+        <td class="tdName" >{{ city.zipCode }}</td>
+        <td class="tdAction">
+            <a href="#" id="city_edit" title="{{ city.id }}"  class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="{{ path('app_city_delete',{'id' : city.id}) }}" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
+        </td>
+    </tr>
+{% endfor %}
+{% endif %}
         <tr class="trTabCamp">
         {{ form_start(form_city) }}
             <td class="tdName">
