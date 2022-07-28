@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Manage Campus{% endblock %}
-
 {% block main %}
 
     <h1 class="effetneon">Gérer les campus</h1>
@@ -24,15 +23,27 @@
         </tr>
         </thead>
         <tbody>
+        {% if filteredCampus == null %}
         {% for camp in campus %}
             <tr id="trTabCamp">
                 <td class="tdName">{{ camp.name }}</td>
                 <td class="tdAction">
-                    <a href="#" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="#" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
+                    <a href="#" title="{{ camp.id }}"  id="edit_campus" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{{ path('app_campus_delete',{'id':camp.id}) }}"  class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         {% endfor %}
+        {% else %}
+        {% for camp in filteredCampus %}
+            <tr id="trTabCamp">
+                <td class="tdName">{{ camp.name }}</td>
+                <td class="tdAction">
+                    <a href="#" title="{{ camp.id }}"  id="edit_campus" class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{{ path('app_campus_delete',{'id':camp.id}) }}"  class="text-decoration-none fa-xl effetneon"><i class="fa-solid fa-trash-can"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% endif %}
         <tr class="trTabCamp">
             {{ form_start(form_campus) }}
             <td class="tdName">
