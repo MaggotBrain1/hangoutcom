@@ -1,6 +1,6 @@
 $cityToEdit = document.querySelectorAll('#city_edit');
 let $cpt = 0;
-function modif(event)
+function modifCity(event)
 {
    const id = event.currentTarget.getAttribute("title");
    const ville = event.currentTarget.parentNode.parentNode.firstChild.firstChild.valueOf().value
@@ -29,7 +29,7 @@ function edit(e){
       e.currentTarget.parentNode.parentNode.childNodes[1].setAttribute("type","number")
       e.currentTarget.parentNode.parentNode.insertBefore(document.createElement("td"),e.currentTarget.parentNode.parentNode.childNodes[2])
       e.currentTarget.parentNode.parentNode.childNodes[2].appendChild(e.currentTarget.parentNode.parentNode.childNodes[1])
-      e.currentTarget.addEventListener('click',modif)
+      e.currentTarget.addEventListener('click',modifCity)
    }
 
 
