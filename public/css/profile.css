@@ -1,0 +1,53 @@
+.block-form {
+    background-color: rgba(4, 75, 181, 0.8);
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.newHangoutFormTableClass {
+    background: none;
+}
+
+td {
+    margin: 1%;
+    padding: 1%;
+    width: 300px;
+
+}
+
+.block-buttons{
+    padding: 2%;
+
+
+    text-align: center;
+
+}
+button {
+    margin-right: 2%;
+    margin-left: 2%;
+}
+
+div>button>a {
+    color: white;
+}
+
+input, select {
+    border-style: none ;
+    border-radius: 10px;
+    text-align: center;
+}
+/*.createHangoutRow {
+    margin: 3%;
+    padding: 1%;
+    background-color: #3DD8FC;
+    text-align: -moz-left;
+    vertical-align: baseline;
+}
+
+.createHangoutCol {
+    padding-right: 2%;
+    grid-column: 1 / 4;
+    grid-row: 1;
+    background-color: #00ffaa;
+
+}*/
