@@ -12,7 +12,7 @@ class MailService
     public function send() {
         $mj = new Client($_ENV['MAIL_API_KEY'], $_ENV['MAIL_API_PRIVATE_KEY'] , true, ['version' => 'v3.1']);
         $body = ['Messages' => [['From' => ['Email' => "boutet1406@gmail.com",
-            'Name' => "Quentin"],
+            'Name' => "Hangout.com"],
             'To' => [[
                 'Email' => "quentin.boutet2020@campus-eni.fr",
                 'Name' => "Quentin"

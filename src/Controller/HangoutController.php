@@ -30,6 +30,7 @@ class HangoutController extends AbstractController
     public function index(AccessDecisionManagerInterface $accessDecisionManager  ,HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository,UpdateStatusHangouts $updateStatusHangouts,
     MailService $mailer): Response
     {
+        $mailer->send();
         $user = $this->getUser();
         if($user == null)
         {
