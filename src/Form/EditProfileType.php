@@ -24,7 +24,6 @@ class EditProfileType extends AbstractType
         $builder
             ->add('pseudo',TextType::class,[
                 'required'=>false,
-
             ])
             ->add('name',TextType::class,[
 
@@ -51,14 +50,11 @@ class EditProfileType extends AbstractType
                 'mapped'=>false,
 
 
+
             ])
             ->add('plainPassword',PasswordType::class,[
                 'mapped'=>false,
                 'required'=>false,
-
-
-
-
             ],
             )
             /*->add('plainPassword',RepeatedType::class,

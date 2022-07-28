@@ -106,7 +106,6 @@ body {
 }
 .actionsContainer{
     display: flex;
-
     width: 100%;
     justify-content: space-evenly;
 }
@@ -292,23 +291,8 @@ h1{
     margin-top: 2%;
 }
 
-table{
-    width: 80%;
-    color: #DDDDDD;
-    background-color: rgba(1, 119, 236, 0.2);
+td,tr,table{
     border: none;
-}
-td,tr{
-    border: none;
-}
-
-
-thead{
-    background-image: url("../img/backgrounds/headTab.jpg");
-    background-position: center;
-}
-table{
-    text-align: center;
 }
 
 .txtTh{

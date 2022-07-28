@@ -1,0 +1,190 @@
+h1{
+    font-family: 'Neonderthaw', cursive;
+}
+.choicesContainer{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+}
+.choicesSubContainer{
+    background-color: rgba(4, 75, 181, 0.8);
+    height: 60px;
+    margin:10px;
+    border-radius: 8px;
+}
+.choicesSubContainer>a{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    text-decoration: none;
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+.choicesSubContainer>a:hover{
+    background-color: rgba(1, 25, 63, 0.8);
+    border-radius: 8px;
+}
+/*FORM REGISTER*/
+.formRegisterContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-radius: 8px;
+}
+.formRegisterSubContainer{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    justify-content: center;
+    align-items: center;
+}
+.rowInpt,.btnContainerRegister{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80px;
+    margin: 1%;
+
+}
+.inptRegsterForm{
+    background-color: rgba(4, 75, 181, 0.8);
+    height: 50px;
+    width: 300px;
+    border-radius: 8px;
+    text-align: center;
+    border: none;
+    color: white;
+
+}
+.rowFormRegisterBrn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80px;
+    margin: 1%;
+}
+.btnContainerRegister{
+    flex-direction: row;
+    justify-content: space-between;
+    width: 300px;
+}
+.btnContainerRegister>button, .rowAgreeT{
+    height: 50px ;
+    width: 140px;
+    background-color: rgba(4, 75, 181, 0.8);
+    border-radius: 8px;
+    color: #FFFFFF;
+}
+.rowAgreeT{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: white;
+}
+/* FORM CAMPUS*/
+.txtCampus{
+    align-self: flex-start;
+    margin-left: 1%;
+}
+.formFilterCampusContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+}
+.formFilterCampusSubContainer{
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    justify-content: space-evenly;
+    align-items: center;
+    width:50%;
+    flex-wrap: wrap;
+}
+.btnFilterCamp{
+    color:white;
+    background-color: #3DD8FC;
+    height: 40px;
+    border:none;
+    border-radius: 8px;
+
+}
+
+.tableCampus{
+
+    table-layout: fixed;
+    width: 50%;
+    border-collapse: collapse;
+    background-color: rgba(4, 75, 181, 0.8);
+    margin : 1%;
+
+}
+.inptFormCampus{
+    width: 280px;
+    height: 40px;
+    border-radius: 20px;
+    border:none;
+    color:white;
+    background-color: rgba(4, 75, 181, 0.8);
+    text-align: center;
+}
+.rowInptCampus{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 80px;
+    width: 400px;
+}
+.labelTabCamp{
+    padding-left: 10px;
+}
+.labelTabAction{
+    text-align: center;
+}
+.tdAction{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+.tdName{
+    padding: 10px;
+}
+.inptFormCampusAdd{
+    border-radius: 20px;
+    width: 100%;
+    text-align: center;
+    color:#044BB5CC ;
+}
+.rowInptCampusAdd{
+
+}
+.btnTdAction{
+    border:none;
+    background: none;
+    color: white;
+
+}
+.trTabCampAddCity{
+    display: flex;
+    background: #f1f2f3;
+    flex-wrap: wrap;
+
+
+}
+.inptFormCityAdd,.inptFormZipAdd{
+    border-radius: 12px;
+    border: none;
+    text-align: center;
+}
+.inptFormZipAdd{
+    width: 40%;
+    color:#044BB5CC ;
+}

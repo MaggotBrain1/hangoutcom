@@ -14,8 +14,18 @@ class CityFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class,['label'=>false])
-            ->add('zipCode',IntegerType::class,['label'=>false])
+            ->add('name',TextType::class,[
+                'label'=>false,
+                'attr' => ['class' => 'inptFormCityAdd'],
+                'row_attr' => ['class' => 'rowInptCityAdd'] ,
+
+            ])
+            ->add('zipCode',IntegerType::class,[
+                'label'=>false,
+                'attr' => ['class' => 'inptFormZipAdd'],
+                'row_attr' => ['class' => 'rowInptCityAdd'] ,
+
+            ])
         ;
     }
 

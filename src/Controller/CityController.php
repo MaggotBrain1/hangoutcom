@@ -14,23 +14,32 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CityController extends AbstractController
 {
-    #[Route('/city', name: 'app_city')]
+    #[Route('/city/edit/{id}/{ville}/{cp}', name: 'app_city_edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(EntityManagerInterface $em,Request $request, CityRepository $cityRepository): Response
+    public function edit(EntityManagerInterface $em, CityRepository $cityRepository, int $id,string $ville,string $cp)
     {
-        $city = new City();
-        $cityForm = $this->createForm(CityFormType::class,$city);
-        $cityForm->handleRequest($request);
-
-        if($cityForm->isSubmitted() && $cityForm->isValid()){
-            $em->persist($city);
-            $em->flush();
+        $cpt = 0;
+        $city = $cityRepository->find($id);
+        if($city != '')
+        {
+            $cpt++;
+            $city->setName($ville);
+            $this->addFlash('fail','la ville ne peut pas être nulle');
         }
+        if(strlen($cp) == 5 && preg_match('^\d{5}^',$cp))
+        {
+            $cpt++;
+            $city->setZipCode($cp);
+            $this->addFlash('fail','Le code postal doit faire 5 chiffres');
+        }
+        if($cpt === 2)
+        {
+            $this->addFlash('sucess','Modifications enregistrées');
+        }
+        $em->flush();
+        return $this->redirectToRoute('app_admin_manage_city');
 
-        return $this->render('city/city.html.twig', [
-            'citys' => $cityRepository->findAll(),
-            'form'=> $cityForm->createView()
-        ]);
+
     }
     #[Route('/city/delete/{id}', name: 'app_city_delete')]
     #[IsGranted('ROLE_ADMIN')]
@@ -39,7 +48,7 @@ class CityController extends AbstractController
         $city = $cityRepository->find($id);
         $em->remove($city);
         $em->flush();
-        return $this->redirectToRoute('app_city');
+        return $this->redirectToRoute('app_admin_manage_city');
 
 
     }

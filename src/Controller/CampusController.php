@@ -14,22 +14,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CampusController extends AbstractController
 {
-    #[Route('/campus', name: 'app_campus')]
+    #[Route('/campus/edit/{id}/{nom}', name: 'app_campus_edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(EntityManagerInterface $em,Request $request,CampusRepository $campusRepository): Response
+    public function edit(EntityManagerInterface $em, CampusRepository $campusRepository, int $id,string $nom)
     {
-        $campus = new Campus();
-        $campusForm = $this->createForm(CampusFormType::class,$campus);
-        $campusForm->handleRequest($request);
-
-        if($campusForm->isSubmitted() && $campusForm->isValid()){
-            $em->persist($campus);
-            $em->flush();
+        $campus = $campusRepository->find($id);
+        if($nom != '')
+        {
+            $campus->setName($nom);
+            $this->addFlash('sucess','Modification Enregistrée');
         }
-        return $this->render('campus/index.html.twig', [
-            'form' => $campusForm->createView(),
-            'campus'=> $campusRepository->findAll()
-        ]);
+        else{
+            $this->addFlash('fail','Le nom du campus ne peut pas être vide');
+        }
+        $em->flush();
+        return $this->redirectToRoute('app_admin_manage_campus');
     }
 
     #[Route('/campus/delete/{id}', name: 'app_campus_delete')]
@@ -39,6 +38,6 @@ class CampusController extends AbstractController
         $campus = $campusRepository->find($id);
         $em->remove($campus);
         $em->flush();
-        return $this->redirectToRoute('app_campus');
+        return $this->redirectToRoute('app_admin_manage_campus');
     }
 }
