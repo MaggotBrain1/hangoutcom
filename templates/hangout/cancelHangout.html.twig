@@ -1,29 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h2>Annuler une sortie</h2>
+    <div class="block-formCancel">
+    <h2 class="cancelTitle">Annuler une sortie</h2>
     <div class="detailRow">
         <label for="name">Nom de la sortie :</label>
-        <p id="name">{{ hangout.name }}</p>
+        <p id="name" class="textCancelLeft">{{ hangout.name }}</p>
     </div>
     <div class="detailRow">
         <label for="date">Date de la sortie :</label>
-        <p id="date">{{ hangout.startTime|date }}</p>
+        <p id="date" class="textCancelLeft">{{ hangout.startTime|date }}</p>
     </div>
     <div class="detailRow">
         <label for="campus">Campus :</label>
-        <p id="campus">{{ hangout.campusOrganizerSite.name }}</p>
+        <p id="campus" class="textCancelLeft">{{ hangout.campusOrganizerSite.name }}</p>
     </div>
-    <div class="detailRow">
+    <div class="detailRowPlace">
         <label for="place">Lieu :</label>
-        <p id="place">{{ hangout.place.name }}</p>
+        <p id="place" class="textCancelLeft">{{ hangout.place.name }} {{ hangout.place.city.zipCode }} {{ hangout.place.city.name }}</p>
     </div>
-    {{ form_start(form) }}
-    <div class="detailRow">
+    {{ form_start(form,{'attr':{'class':'formCancel'}}) }}
+    <div class="detailRow motif">
     {{ form_label(form.reason) }}
     {{ form_widget(form.reason) }}
     </div>
+        <div class="errorCancel">
+            {{ form_errors(form.reason)}}
+        </div>
+        <div class="buttonCancelDiv">
     <button type="submit">Enregistrer</button>
     <button type="reset">Annuler</button>
+        </div>
     {{ form_end(form) }}
+    </div>
 {% endblock %}

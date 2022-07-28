@@ -1,4 +1,4 @@
-.block-form {
+.block-form, .block-formCancel {
     background-color: rgba(4, 75, 181, 0.8);
     border-radius: 10px;
     padding: 2%;

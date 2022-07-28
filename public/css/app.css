@@ -247,7 +247,7 @@ h1{
     align-items: center;
     height: 100%;
 }
-.detailRow {
+.detailRow, .detailRowPlace {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
