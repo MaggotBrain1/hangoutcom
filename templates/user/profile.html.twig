@@ -1,81 +1,88 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-
-    
-
-
-
-
     {{ form_start(editUserForm) }}
-    {% if app.user.image != null %}
-    <img src="{{ asset('photos/'~app.user.image)}}" alt="Photo de profil" height="200">
-    {% else %}
-        <img src="{{ asset('photos/user-default.png')}}" alt="Photo de profil" height="96">
-    {% endif %}
-    <div class="container text-center">
-        <h1>Mon profil</h1>
+
+<div class="container text-center">
+    <h1>Mon profil</h1>
+</div>
+<div class="profile-vue-page">
+    <div class="profile-form-container">
+        <div class="block-image">
+            {% if app.user.image != null %}
+                <img src="{{ asset('photos/'~app.user.image) }}" alt="Photo de profil" height="200">
+                {% else %}
+                <img src="{{ asset('photos/user-default.png') }}" alt="Photo de profil" height="96">
+            {% endif %}
+        </div>
+        <div class="block-form-profile">
+            <table class="profile-table">
+                <tbody class="profile-tbody">
+                <tr>{# ligne 1 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.pseudo) }} :
+                    </td>
+                    <td class="profile-td">{{ form_widget(editUserForm.pseudo) }}</td>
+                </tr>
+                <tr>{# ligne 2 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.name) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.name) }}</td>
+                </tr>
+                <tr>{# ligne 3 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.lastName) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.lastName) }}</td>
+                </tr>
+                <tr>{# ligne 4 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.phone) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.phone) }}</td>
+                </tr>
+                <tr>{# ligne 5 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.email) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.email) }}</td>
+                </tr>
+                <tr>{# ligne 6 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.password) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.password) }}</td>
+                </tr>
+                <tr>{# ligne 7 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.plainPassword) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.plainPassword) }}</td>
+                </tr>
+                <tr>{# ligne 8 #}
+                    <td class="profile-td"></td>
+                    <td class="profile-td">{{ form_label(editUserForm.campus) }} :</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.campus) }}</td>
+                </tr>
+                <tr>{# ligne 9 #}
+                    <td class="profile-td"></td>
+
+                    <td class="profile-td">{% if app.user.image == null %}
+                            {{ form_label(editUserForm.image) }}
+                        {% else %}
+                            {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
+                        {% endif %}</td>
+                    <td class="profile-td">{{ form_widget(editUserForm.image) }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="" >
-
-
-        <div class="row">
-            <div class="col-6">{{ form_label(editUserForm.pseudo) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.pseudo) }}</div>
-        </div>
-
-        <div class="row">
-            <div class="col-6">{{ form_label(editUserForm.name) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.name) }}</div>
-        </div>
-
-        <div class="row">
-            <div class="col-6">{{ form_label(editUserForm.lastName) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.lastName) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-6">{{ form_label(editUserForm.phone) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.phone) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-6">{{ form_label(editUserForm.email) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.email) }}</div>
-        </div>
-        <div class="row">
-            {#    <div class="col-6">{{ form_label(editUserForm.plainPassword) }} :</div>
-        <div class="col-6">{{ form(editUserForm.plainPassword) }}</div> #}
-            <div class="col-6">{{ form_label(editUserForm.password) }} :</div>
-            <div class="col-6 no-gutters">{{ form_row(editUserForm.password) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-6 ">{{ form_label(editUserForm.plainPassword) }} :</div>
-            <div class="col-6 no-gutters">{{ form_row(editUserForm.plainPassword) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-6">{{ form_label(editUserForm.campus) }} :</div>
-            <div class="col-6">{{ form_row(editUserForm.campus) }}</div>
-        </div>
-        <div class="row">
-           {% if app.user.image == null %}
-        {{ form_label(editUserForm.image) }}
-    {% else %}
-    {{ form_label(editUserForm.image,'modifier ma photo de profil') }}
-    {% endif %}
-    {{ form_row(editUserForm.image) }}
-    </div>
-        <div class="text-center">
-
-    <button type="submit">Enregistrer</button>
-        </div>
-    </div>
+        <button class="btn btn-lg btn-primary" type="submit">Enregistrer</button>
+</div>
 
 
     {{ form_end(editUserForm) }}
 
-{% endblock %}
+    {% endblock %}
 
-{% block title %}
-    {{ app.user.name }} | {{ app.user.lastname }}
-{% endblock %}
+    {% block title %}
+        {{ app.user.name }} | {{ app.user.lastname }}
+    {% endblock %}
 

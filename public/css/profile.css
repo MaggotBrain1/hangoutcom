@@ -1,0 +1,37 @@
+.profile-vue-page{
+    display: block;
+    background-color: rgba(4, 75, 181, 0.8);
+    border-radius: 10px;
+    padding: 2%;
+    text-align: center;
+}
+
+.profile-form-container{
+    display: flex;
+    flex-direction: row;
+    align-content: start;
+}
+
+.block-image{
+}
+
+.block-form-profile{
+    width: 60%;
+}
+
+.profile-table{
+    text-align: left;
+}
+
+.profile-td{
+    width: 350px;
+}
+
+.button-edit-prodile{
+    text-align: center;
+}
+
+/*
+table.profile-table {
+    background-color: rgba(4, 75, 181, 0.8);
+}*/
