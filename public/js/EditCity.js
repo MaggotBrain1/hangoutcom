@@ -2,6 +2,7 @@ $cityToEdit = document.querySelectorAll('#city_edit');
 let $cpt = 0;
 function modifCity(event)
 {
+
    const id = event.currentTarget.getAttribute("title");
    const ville = event.currentTarget.parentNode.parentNode.firstChild.firstChild.valueOf().value
    const cp = event.currentTarget.parentNode.parentNode.childNodes[1].firstChild.valueOf().value
