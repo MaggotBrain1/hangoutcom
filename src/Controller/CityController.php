@@ -24,17 +24,19 @@ class CityController extends AbstractController
         {
             $cpt++;
             $city->setName($ville);
-            $this->addFlash('fail','la ville ne peut pas être nulle');
         }
         if(strlen($cp) == 5 && preg_match('^\d{5}^',$cp))
         {
             $cpt++;
             $city->setZipCode($cp);
-            $this->addFlash('fail','Le code postal doit faire 5 chiffres');
+
         }
         if($cpt === 2)
         {
             $this->addFlash('sucess','Modifications enregistrées');
+        }
+        else{
+            $this->addFlash('fail','Le code postal doit faire 5 chiffres et la ville doit être renseignée');
         }
         $em->flush();
         return $this->redirectToRoute('app_admin_manage_city');

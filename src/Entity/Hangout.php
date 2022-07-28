@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: HangoutRepository::class)]
 class Hangout
@@ -54,6 +55,7 @@ class Hangout
     private ?Place $place = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'Le motif d\'annulation doit être renseigné')]
     private ?string $reason = null;
 
     public function __construct()

@@ -1,0 +1,60 @@
+.cancelTitle{
+    text-align: center;
+}
+
+.buttonCancelDiv{
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 20px;
+
+}
+
+.buttonCancelDiv button{
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    border-style: none;
+}
+.detailRowPlace{
+    width: 50%;
+
+}
+.block-formCancel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65%;
+}
+.detailRow{
+    width: 50%;
+}
+
+.detailRow > p {
+    align-self: flex-end;
+    width: 50%;
+
+}
+.detailRowPlace> p{
+    align-self: flex-end;
+    width: 50%;
+}
+.formCancel{
+    width: 50%;
+}
+
+.motif
+{
+    width: 100%;
+    justify-content: space-between;
+}
+.motif > textarea{
+    width: 50%;
+    border-radius: 10px;
+}
+.motif >ul{
+    list-style: none;
+}
+.errorCancel > ul{
+    color: #a90606;
+    list-style: none;
+}

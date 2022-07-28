@@ -24,7 +24,7 @@ class CampusController extends AbstractController
             $campus->setName($nom);
             $this->addFlash('sucess','Modification Enregistrée');
         }
-        else{
+        else {
             $this->addFlash('fail','Le nom du campus ne peut pas être vide');
         }
         $em->flush();
