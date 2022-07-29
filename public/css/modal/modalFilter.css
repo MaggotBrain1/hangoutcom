@@ -9,7 +9,9 @@
     color: #044BB5B2;
     font-size: 22px;
     font-weight: bold;
-
-
+}
+.rowInptFilterS{
+    display: flex;
+    flex-direction: row;
 }
 

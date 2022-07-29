@@ -5,10 +5,26 @@
         </a>
         <p class="infoUserName">{{ app.user.name }}</p>
     </div>
-    <div class="rowHeadAction">
+    <div class="rowHeadActionDate">
         <a class="actionHeader" href="{{ path("app_logout") }}" title="Home">
             <i class="fa-solid fa-arrow-right-from-bracket  fa-lg"></i>
         </a>
-        <p class="dateHead">{{ "now"|date("m/d/Y", "Europe/Paris") }}</p>
+        <p class="dateHead">{{ "now"|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}</p>
     </div>
+    {% for role in app.user.roles %}
+        {% if  role == "ROLE_ADMIN" %}
+            <div class="rowHeadActionI">
+                <a class="actionHeader" href="{{ path("app_admin") }}" title="ADMINHome">
+                    <i class="fa-solid fa-shield-halved fa-lg"></i>
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="rowHeadActionI">
+        <a class="actionHeader" href="{{ path("app_hangout_create") }}" title="ADMINHome">
+            <i class="fa-solid fa-calendar-plus fa-lg"></i>
+        </a>
+    </div>
+
+
 </div>

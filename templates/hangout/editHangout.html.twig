@@ -3,70 +3,103 @@
 {% block title %}Hello HangoutController!{% endblock %}
 
 {% block main %}
-    <h2>Créer une sortie</h2>
-    <div class="mainCreate">
-        <div class="container">
-            {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'formContainer'}}) }}
-            <div class="formSubContainer">
-                <div class="rowInpt">
-                    {{ form_row(form.name) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.startTime) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.registerDateLimit) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.MaxOfRegistration) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.duration) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.hangoutInformations) }}
-                </div>
-            </div>
+    <h2 class="effetneon">Créer une sortie</h2>
+    <div class="block-form">
 
-            <div class="formSubContainer">
-                <div class="rowInpt">
-                    {{ form_row(form.campusOrganizerSite) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.city) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.place) }}
-                    <button type="button" class="btnAddPlace" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i id="addPlace" class="fa-solid fa-circle-plus" size="40"></i>
-                    </button>
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.street) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.zip) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.latitude) }}
-                </div>
-                <div class="rowInpt">
-                    {{ form_row(form.longitude) }}
-                </div>
-            </div>
+        <div class="createHangoutContainer ">
+            {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'formContainer'}}) }}
+
+            <table class="newHangoutFormTableClass">
+                <tbody>
+                <tr>{#ligne 1#}
+                    <td>{{ form_label(form.name) }}</td>
+                    <td>{{ form_widget(form.name) }}</td>
+                    {{ form_errors(form.name) }}
+
+                    <td>{{ form_label(form.campusOrganizerSite) }}</td>
+                    <td>{{ form_widget(form.campusOrganizerSite) }}</td>
+                    {{ form_errors(form.campusOrganizerSite) }}
+                </tr>
+                <tr>{#ligne 2#}
+                    <td>{{ form_label(form.startTime) }}</td>
+                    <td>{{ form_widget(form.startTime) }}</td>
+                   {{ form_errors(form.startTime) }}
+
+                    <td>{{ form_label(form.city) }}</td>
+                    <td>{{ form_widget(form.city) }}</td>
+                    {{ form_errors(form.city) }}
+
+                </tr>
+                <tr>{#ligne 3#}
+                    <td>{{ form_label(form.registerDateLimit) }}</td>
+                    <td>{{ form_widget(form.registerDateLimit) }}</td>
+                   {{ form_errors(form.registerDateLimit) }}
+
+                    <td>{{ form_label(form.place) }}</td>
+                    <td>{{ form_widget(form.place) }}
+                        <button type="button" class="btnAddPlace" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i id="addPlace" class="fa-solid fa-circle-plus" size="40"></i>
+                        </button>
+                    </td>
+                    {{ form_errors(form.place) }}
+
+                </tr>
+                <tr>{#ligne 4#}
+                    <td>{{ form_label(form.MaxOfRegistration) }}</td>
+                    <td>{{ form_widget(form.MaxOfRegistration) }}</td>
+                  {{ form_errors(form.MaxOfRegistration) }}
+
+                    <td>{{ form_label(form.street) }}</td>
+                    <td>{{ form_widget(form.street) }}</td>
+                    {{ form_errors(form.street) }}
+
+                </tr>
+                <tr>{#ligne 5#}
+                    <td>{{ form_label(form.duration) }}</td>
+                    <td>{{ form_widget(form.duration) }}</td>
+                    {{ form_errors(form.duration) }}
+
+                    <td>{{ form_label(form.zip) }}</td>
+                    <td>{{ form_widget(form.zip) }}</td>
+                  {{ form_errors(form.zip) }}
+
+
+                </tr>
+                <tr>{#ligne 6#}
+                    <td>{{ form_label(form.hangoutInformations) }}</td>
+                    <td>{{ form_widget(form.hangoutInformations) }}</td>
+                    {{ form_errors(form.hangoutInformations) }}
+
+                    <td>{{ form_label(form.latitude) }}</td>
+                    <td>{{ form_widget(form.latitude) }}</td>
+                    {{ form_errors(form.latitude) }}
+
+
+                    <td>{{ form_label(form.longitude) }}</td>
+                    <td>{{ form_widget(form.longitude) }}</td>
+                   {{ form_errors(form.longitude) }}
+
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="btnContainer">
-            <button id="surCoucheBtn" type="submit" class="btn btn-primary">Enregister</button>
+        <div class="block-buttons">
+            <button id="hangout-save-button" type="submit" name="save" class="btn btn-lg btn-primary">Enregister</button>
+
             {#  <a href="{{ path('app_hangout_publish', {id: hangout.id}) }}" id="surCoucheBtn" type="submit" class="btn btn-primary" >
                     Publier la sortie
-                </a>#}
-            <button id="surCoucheBtn" name="submit" value="published" type="submit" class="btn btn-primary"> Publier la sortie</button>
+                </a> #}
+            <button id="hangout-punblish-button" name="submit" value="published" type="submit" class="btn btn-lg btn-primary">
+                Publier la sortie
+            </button>
 
-            <a id="surCoucheBtn" href="{{ path('app_hangout_delete',{id: thisIdHangout } ) }}" class="btn btn-primary">Supprimé la sortie</a>
+            <a  href="{{ path('app_hangout_delete',{id: thisIdHangout } ) }}" class="btn btn-lg btn-outline-danger">Supprimé la sortie</a>
 
-            <button id="surCoucheBtn" name="submit" value="cancel" type="submit" class="btn btn-primary">Annuler</button>
+            <a class="btn btn-lg btn-primary " href="{{ path('app_home') }}">Annuler</a>
         </div>
-        {{ form_end(form) }}
+
+    </div>
+    {{ form_end(form) }}
 
     </div>
     <!-- Modal -->
@@ -89,3 +122,6 @@
     </div>
 
 {% endblock %}
+
+
+

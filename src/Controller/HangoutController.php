@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Hangout;
+use App\Entity\Place;
 use App\Entity\Status;
 use App\Entity\User;
 use App\Form\FilterType;
 use App\Form\HangoutCancelType;
 use App\Form\HangoutFormType;
+use App\Form\PlaceFormType;
 use App\Repository\HangoutRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
@@ -20,27 +22,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 class HangoutController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
-    public function index(AccessDecisionManagerInterface $accessDecisionManager  ,HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository,UpdateStatusHangouts $updateStatusHangouts,
+    public function index(HangoutRepository $hangoutRepository, Request $request,EntityManagerInterface $em, StatusRepository $statusRepository,UpdateStatusHangouts $updateStatusHangouts,
     MailService $mailer): Response
     {
+        //$mailer->send();
         $user = $this->getUser();
         if($user == null)
         {
             $this->addFlash('fail','Vous devez être connecté pour voir les sorties!');
             return $this->redirectToRoute('app_login');
         }
-        //TODO fonctionnel mais pas propre, trouver un moyen de config User Admin symfony (voir doc)
+    /*    //TODO fonctionnel mais pas propre, trouver un moyen de config User Admin symfony (voir doc)
         $token = new UsernamePasswordToken($user,'none',$user->getRoles());
         if($accessDecisionManager->decide($token, (array)'ROLE_ADMIN')) {
             return $this->redirectToRoute('app_admin');
-        }
+        }*/
 
 
 
@@ -98,15 +99,28 @@ class HangoutController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
     {
         $hangout = new Hangout();
+        $place = new Place();
+
         $currentUser = $this->getUser();
 
         $hangout->setOrganizer($currentUser);
+
         $campusOrganizerSite = $currentUser->getCampus();
+
         $hangout->setCampusOrganizerSite($campusOrganizerSite);
+
         $hangoutForm = $this->createForm(HangoutFormType::class, $hangout, ['defaultCampus' => $campusOrganizerSite]);
+        $placeForm   = $this->createForm(PlaceFormType::class, $place);
+
+        $placeForm->handleRequest($request);
         $hangoutForm->handleRequest($request);
 
-        if ($hangoutForm->isSubmitted() && $hangoutForm->isValid()) {
+
+
+
+        if ($hangoutForm->isSubmitted() && $hangoutForm->isValid() ||$placeForm->isSubmitted() && $placeForm->isValid()) {
+            $em->persist($place);
+            $em->flush();
             $hangout->setStartTime($hangoutForm["startTime"]->getData());
             $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
 
@@ -118,6 +132,7 @@ class HangoutController extends AbstractController
 
             $em->persist($hangout);
             $em->flush();
+
             $hangoutId = $hangout->getId();
             $this->registerToHangout($hangoutId, $em);
             $this->addFlash('success', 'Hangout successfully added .');
@@ -126,6 +141,7 @@ class HangoutController extends AbstractController
 
         return $this->render('hangout/createHangout.html.twig', [
             'form' => $hangoutForm->createView(),
+            'formPlace' => $placeForm->createView()
         ]);
     }
 
@@ -240,7 +256,7 @@ class HangoutController extends AbstractController
 
     #[Route('/hangout/cancel/{id}', name: 'app_hangout_cancel', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER')]
-    public function editStatus(EntityManagerInterface $em, HangoutRepository $hangoutRepository, StatusRepository $statusRepository, int $id, Request $request): Response
+    public function editStatus(EntityManagerInterface $em, HangoutRepository $hangoutRepository, StatusRepository $statusRepository, int $id, Request $request, MailService $mailer): Response
     {
         $hangout = $hangoutRepository->find($id);
         $currentUser = $this->getUser();
@@ -259,6 +275,12 @@ class HangoutController extends AbstractController
             $hangout->setStatus($statusRepository->find(Status::STATUS_CANCELED));
             $hangout->setReason($form->get('reason')->getData());
             $em->flush();
+            $this->addFlash('fail','La sortie à bien été annulée.');
+          /*  $userInHangout = $hangout->getHangouts();
+            foreach ($userInHangout as $user ){
+            }*/
+            $mailer->send();
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -290,45 +312,42 @@ class HangoutController extends AbstractController
         // Return array with structure of the neighborhoods of the providen city id
         return new JsonResponse($responseArray);
 
-        // e.g
-        // [{"id":"3","name":"Treasure Island"},{"id":"4","name":"Presidio of San Francisco"}]
     }
 
-    /*    #[Route('/hangout/placeByCity', name: 'testToto', methods: ['GET', 'POST'])]
-        #[IsGranted('ROLE_USER')]
-        public function testToto(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
-        {
-            $hangout = new Hangout();
-            $currentUser = $this->getUser();
 
-            $hangout->setOrganizer($currentUser);
-            $campusOrganizerSite = $currentUser->getCampus();
-            $hangout->setCampusOrganizerSite($campusOrganizerSite);
-            $hangoutForm = $this->createForm(HangoutFullFormType::class, $hangout, ['defaultCampus' => $campusOrganizerSite]);
-            $hangoutForm->handleRequest($request);
+    /**
+     * Returns a JSON string with the neighborhoods of the City with the providen id.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/PlacesByCity', name: 'app_places_by_city')]
+    public function PlacesByCity(Request $request,PlaceRepository $placeRepository)
+    {
+        // Get Entity manager and repository
 
-            if ($hangoutForm->isSubmitted() && $hangoutForm->isValid()) {
-                $hangout->setStartTime($hangoutForm["startTime"]->getData());
-                $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
 
-                if ($request->request->get('submit') === 'published') {
-                    $hangout->setStatus($statusRepository->find(Status::STATUS_OPENED));
-                } else {
-                    $hangout->setStatus($statusRepository->find(Status::STATUS_CREATED));
-                }
+        // Search the neighborhoods that belongs to the city with the given id as GET parameter "cityid"
+        $places = $placeRepository->createQueryBuilder("q")
+            ->where("q.city = :cityid")
+            ->setParameter("cityid", $request->query->get("cityid"))
+            ->getQuery()
+            ->getResult();
 
-                $em->persist($hangout);
-                $em->flush();
-                $hangoutId = $hangout->getId();
-                $this->registerToHangout($hangoutId, $em);
-                $this->addFlash('success', 'Hangout successfully added .');
-                return $this->redirectToRoute('app_home');
-            }
+        // Serialize into an array the data that we need, in this case only name and id
+        // Note: you can use a serializer as well, for explanation purposes, we'll do it manually
+        $responseArray = array();
+        foreach($places as $place){
+            $responseArray[] = array(
+                "id" => $place->getId(),
+                "name" => $place->getName()
+            );
+        }
 
-            return $this->render('hangout/editHangoutFullForm.html.twig', [
-                'form' => $hangoutForm->createView(),
-            ]);
-        }*/
+        // Return array with structure of the neighborhoods of the providen city id
+        return new JsonResponse($responseArray);
+
+    }
 
 
 

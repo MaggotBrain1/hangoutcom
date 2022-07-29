@@ -3,79 +3,108 @@
 {% block title %}Hello HangoutController!{% endblock %}
 
 {% block main %}
-    <h2>Créer une sortie</h2>
+    <h2 class="effetneon">Créer une sortie</h2>
     <div class="block-form">
 
-    <div class="createHangoutContainer ">
-        {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'formContainer'}}) }}
+        <div class="createHangoutContainer ">
+            {{ form_start(form, {attr: {novalidate: 'novalidate', class: 'formContainer'}}) }}
 
-        <table class="newHangoutFormTableClass">
-            <tbody>
-                <tr>{#ligne 1#}
+            <table class="newHangoutFormTableClass">
+                <tbody>
+                <tr>{# ligne 1 #}
                     <td>{{ form_label(form.name) }}</td>
                     <td>{{ form_widget(form.name) }}</td>
+                    <th>{{ form_errors(form.name) }}</th>
+
                     <td>{{ form_label(form.campusOrganizerSite) }}</td>
                     <td>{{ form_widget(form.campusOrganizerSite) }}</td>
+                    <td>{{ form_errors(form.campusOrganizerSite) }}</td>
                 </tr>
-                <tr>{#ligne 2#}
+                <tr>{# ligne 2 #}
                     <td>{{ form_label(form.startTime) }}</td>
                     <td>{{ form_widget(form.startTime) }}</td>
+                    <td>{{ form_errors(form.startTime) }}</td>
+
                     <td>{{ form_label(form.city) }}</td>
                     <td>{{ form_widget(form.city) }}</td>
+                    <td>{{ form_errors(form.city) }}</td>
+
                 </tr>
-                <tr>{#ligne 3#}
+                <tr>{# ligne 3 #}
                     <td>{{ form_label(form.registerDateLimit) }}</td>
                     <td>{{ form_widget(form.registerDateLimit) }}</td>
+                    <td>{{ form_errors(form.registerDateLimit) }}</td>
+
                     <td>{{ form_label(form.place) }}</td>
-                    <td>{{ form_widget(form.place) }}
-                            <button type="button" class="btnAddPlace" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i id="addPlace" class="fa-solid fa-circle-plus" size="40"></i>
-                            </button>
-                        </td>
+                    <td class="tets">{{ form_widget(form.place) }}
+                        <button type="button" class="btnAddPlace" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i id="addPlace" class="fa-solid fa-circle-plus fa-xl" ></i>
+                        </button>
+                    </td>
+                    <td>{{ form_errors(form.place) }}</td>
+
                 </tr>
-                <tr>{#ligne 4#}
+                <tr>{# ligne 4 #}
                     <td>{{ form_label(form.MaxOfRegistration) }}</td>
                     <td>{{ form_widget(form.MaxOfRegistration) }}</td>
+                    <td>{{ form_errors(form.MaxOfRegistration) }}</td>
+
                     <td>{{ form_label(form.street) }}</td>
                     <td>{{ form_widget(form.street) }}</td>
+                    <td>{{ form_errors(form.street) }}</td>
+
                 </tr>
-                <tr>{#ligne 5#}
+                <tr>{# ligne 5 #}
                     <td>{{ form_label(form.duration) }}</td>
                     <td>{{ form_widget(form.duration) }}</td>
+                    <td>{{ form_errors(form.duration) }}</td>
+
                     <td>{{ form_label(form.zip) }}</td>
                     <td>{{ form_widget(form.zip) }}</td>
+                    <td>{{ form_errors(form.zip) }}</td>
+
 
                 </tr>
-                <tr>{#ligne 6#}
+                <tr>{# ligne 6 #}
                     <td>{{ form_label(form.hangoutInformations) }}</td>
                     <td>{{ form_widget(form.hangoutInformations) }}</td>
+                    <td>{{ form_errors(form.hangoutInformations) }}</td>
+
                     <td>{{ form_label(form.latitude) }}</td>
                     <td>{{ form_widget(form.latitude) }}</td>
+                    <td>{{ form_errors(form.latitude) }}</td>
+
                 </tr>
-            <tr>{#ligne 7#}
-                <td></td>
-                <td></td>
-                <td>{{ form_label(form.longitude) }}</td>
-                <td>{{ form_widget(form.longitude) }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="block-buttons">
-        <button id="hangout-save-button" type="submit" name="save" class="btn btn-lg btn-primary">Enregister</button>
-        {#  <a href="{{ path('app_hangout_publish', {id: hangout.id}) }}" id="surCoucheBtn" type="submit" class="btn btn-primary" >
+                <tr>{# ligne 7 #}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ form_label(form.longitude) }}</td>
+                    <td>{{ form_widget(form.longitude) }}</td>
+                    <td>{{ form_errors(form.longitude) }}</td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="block-buttons">
+            <button id="hangout-save-button" type="submit" name="save" class="btn btn-lg btn-primary">Enregister
+            </button>
+            {#  <a href="{{ path('app_hangout_publish', {id: hangout.id}) }}" id="surCoucheBtn" type="submit" class="btn btn-primary" >
                     Publier la sortie
                 </a> #}
-        <button id="hangout-punblish-button" name="submit" value="published" type="submit" class="btn btn-lg btn-primary">
-            Publier la sortie
-        </button>
+            <button id="hangout-punblish-button" name="submit" value="published" type="submit"
+                    class="btn btn-lg btn-primary">
+                Publier la sortie
+            </button>
 
-        <button id="hangout-cancel-button" type="button" class="btn btn-lg btn-primary"><a
-                    style="text-decoration: none;" href="{{ path('app_home') }}">Annuler</a></button>
-    </div>
+            <button id="hangout-cancel-button" type="button" class="btn btn-lg btn-primary"><a
+                        style="text-decoration: none;" href="{{ path('app_home') }}">Annuler</a></button>
+        </div>
 
     </div>
     {{ form_end(form) }}
+
 
     </div>
     <!-- Modal -->
@@ -87,14 +116,81 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    {{ form_start(formPlace) }}
+                    <div class="rowAddPlace">
+                        {{ form_label(formPlace.name) }}
+                        {{ form_widget(formPlace.name) }}
+                        {{ form_errors(formPlace.name) }}
+
+                    </div>
+                    <div class="rowAddPlace">
+                        {{ form_label(formPlace.street) }}
+                        {{ form_widget(formPlace.street) }}
+                        {{ form_errors(formPlace.name) }}
+
+                    </div>
+                    <div class="rowAddPlace">
+                        {{ form_label(formPlace.latitude) }}
+                        {{ form_widget(formPlace.latitude) }}
+                        {{ form_errors(formPlace.name) }}
+
+                    </div>
+                    <div class="rowAddPlace">
+                        {{ form_label(formPlace.longitude) }}
+                        {{ form_widget(formPlace.longitude) }}
+                        {{ form_errors(formPlace.name) }}
+
+                    </div>
+                    <div class="rowAddPlace">
+                        {{ form_label(formPlace.city) }}
+                        {{ form_widget(formPlace.city) }}
+                        {{ form_errors(formPlace.name) }}
+
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Créer le lieu</button>
                 </div>
+                {{ form_end(formPlace) }}
+
             </div>
         </div>
     </div>
+    {% block javascripts %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $('#hangout_form_city').change(function () {
+                var citySelector = $(this);
+
+                // Request the neighborhoods of the selected city.
+                $.ajax({
+                    url: "{{ path('app_places_by_city') }}",
+                    type: "GET",
+                    dataType: "JSON",
+                    data: {
+                        cityid: citySelector.val()
+                    },
+                    success: function (places) {
+                        var placesSelected = $("#hangout_form_place");
+                        var newPlace = document.getElementById("place_form_name").value;
+
+
+                        // Remove current options
+                        placesSelected.html('');
+                        // Empty value ...
+                        placesSelected.append('<option value> lieu à ' + citySelector.find("option:selected").text() + ' ...</option>');
+                        $.each(places, function (key, place) {
+                            placesSelected.append('<option value="' + place.id + '">' + place.name + '</option>');
+                        });
+
+                    },
+                    error: function (err) {
+                        alert("An error ocurred while loading data ...");
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
 
 {% endblock %}

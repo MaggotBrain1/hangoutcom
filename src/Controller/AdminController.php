@@ -4,13 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Entity\City;
+use App\Entity\User;
 use App\Form\CampusFilteredFormType;
 use App\Form\CampusFormType;
 use App\Form\CityFilteredFormType;
 use App\Form\CityFormType;
 use App\Form\CityType;
+use App\Form\UserFilterFormType;
 use App\Repository\CampusRepository;
 use App\Repository\CityRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,10 +27,64 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function HomeAdmin(): Response
     {
-
         return $this->render('admin/homeAdmin.html.twig', [
 
         ]);
+    }
+    #[Route('/admin/manage-user', name: 'app_manage_user')]
+    #[IsGranted('ROLE_USER')]
+    public function manageUser(UserRepository $userRepo, Request $request): Response
+    {
+        $filteredUser='';
+        $user = new User();
+        $formUserFilter = $this->createForm(UserFilterFormType::class, $user);
+        $formUserFilter->handleRequest($request);
+        if($formUserFilter->isSubmitted() && $formUserFilter->isValid())
+        {
+            $name = $formUserFilter->get('name')->getData();
+            $filteredUser = $userRepo->getFilteredUser($name);
+        }
+        $users = $userRepo->findAll();
+        return $this->render('admin/manageUser.html.twig', [
+            'users'=>$users,
+            'formFilterUser'=>$formUserFilter->createView(),
+            'filteredUser'=>$filteredUser,
+        ]);
+    }
+    #[Route('/admin/restrict-user/{id}', name: 'app_admin_restric')]
+    #[IsGranted('ROLE_USER')]
+    public function restrictUser($id ,EntityManagerInterface $em, UserRepository $userRepo): Response
+    {
+        $user = $userRepo->find($id);
+        if ($user){
+            if($user->isIsActive()){
+                $user->setIsActive(false);
+                $this->addFlash('notice', 'L\'utilisateur'.$user->getName()." ".$user->getLastName()." à été restreint");
+
+            }else{
+                $user->setIsActive(true);
+                $this->addFlash('notice', 'L\'utilisateur'.$user->getName()." ".$user->getLastName()." à été réactiver");
+            }
+            $em->persist($user);
+            $em->flush();
+
+        }else{
+            $this->addFlash('notice', 'aucun utilisateur ne correspond');
+
+        }
+
+        return $this->redirectToRoute('app_manage_user');
+    }
+    #[Route('/admin/delete-user/{id}', name: 'app_admin_delete')]
+    #[IsGranted('ROLE_USER')]
+    public function DeleteUser($id ,EntityManagerInterface $em, UserRepository $userRepo): Response
+    {
+        $user = $userRepo->find($id);
+        $em->remove($user);
+        $em->flush();
+        $this->addFlash('notice', 'L\'utilisateur '.$user->getName()." ".$user->getLastName().' à été supprimé');
+
+        return $this->redirectToRoute('app_manage_user');
     }
 
     #[Route('/admin/manage/city', name: 'app_admin_manage_city')]

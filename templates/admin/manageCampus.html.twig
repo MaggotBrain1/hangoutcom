@@ -4,14 +4,17 @@
 {% block main %}
 
     <h1 class="effetneon">Gérer les campus</h1>
-    <h2 class="txtCampus">Filtrer les sites</h2>
+    <h2 class="txtCampus neonText">Filtrer les sites</h2>
     <div class="formFilterCampusContainer">
     {{ form_start(form_filtered_campus) }}
         <div class="formFilterCampusSubContainer">
         {{ form_label(form_filtered_campus.name) }}
         {{ form_widget(form_filtered_campus.name) }}
-            <div>
+            <div class="btnAdminSearch">
                 <button type="submit" class="btnFilterCamp">Rechercher</button>
+                <a href="{{ path('app_admin_manage_campus') }}">
+                    <i class="fa-solid fa-arrows-rotate fa-xl effetneon"></i>
+                </a>
             </div>
         </div>
     {{ form_end(form_filtered_campus) }}

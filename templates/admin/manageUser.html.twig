@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home ADMIN{% endblock %}
+
+{% block main %}
+    {% for message in app.flashes('notice') %}
+        <div id="msgFlashNotice" class="alert alert-info alert-dismissible fade show slideRight">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    {% endfor %}
+    <h1 class="effetneon">Que voulez-faire ?</h1>
+    {% if users %}
+        <h2 class="txtCampus neonText">Filtrer les Utilisateurs</h2>
+
+        <div class="formFilterCampusContainer">
+        {{ form_start(formFilterUser) }}
+        <div class="formFilterCampusSubContainer">
+            {{ form_label(formFilterUser.name) }}
+            {{ form_widget(formFilterUser.name) }}
+            <div class="btnAdminSearch">
+                <button type="submit" class="btnFilterCamp">Rechercher</button>
+                <a href="{{ path('app_manage_user') }}">
+                    <i class="fa-solid fa-arrows-rotate fa-xl effetneon"></i>
+                </a>
+            </div>
+        </div>
+        {{ form_end(formFilterUser) }}
+        <div id="ticketContainer" class="slideUp">
+            {% if filteredUser == null %}
+                {% for user in users %}
+                <div id="userChoices" class="ticketHangout">
+                    <div class="rowTicket">
+                        <p class="pTicket">Prénom</p>
+                        <p>{{ user.name }}</p>
+                    </div>
+                    <div class="rowTicket">
+                        <p class="pTicket">Nom de Famille</p>
+                        <p>{{ user.lastName }}</p>
+                    </div>
+                    <div id="imgTicket" class="rowTicket">
+                        {% if user.image %}
+                            <a href="{{ path('app_user',{'pseudo': user.pseudo}) }}">
+                                <img src="{{ asset('photos/'~user.image) }}" alt="Photo de profil" class="miniPP">
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="rowTicket">
+                        <p class="pTicket">Actions</p>
+                        <div class="actionAdm effetneon">
+
+
+                            <a class="actionsList" href="{{ path('app_admin_restric', {'id': user.id}) }}"
+                               title="update  user">
+                                {% if user.isActive %}
+                                    <i class="fa-solid fa-user-minus fa-lg"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-user-check fa-lg"></i>
+                                {% endif %}
+                            </a>
+
+                            <a class="actionsList" href="{{ path('app_admin_delete', {id: user.id}) }}"
+                               title="delete  user">
+                                <i class="fa-solid fa-user-xmark fa-lg"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+
+            {% else %}
+                {% for userFilter in filteredUser %}
+                    <div id="userChoices" class="ticketHangout">
+                        <div class="rowTicket">
+                            <p class="pTicket">Prénom</p>
+                            <p>{{ userFilter.name }}</p>
+                        </div>
+                        <div class="rowTicket">
+                            <p class="pTicket">Nom de Famille</p>
+                            <p>{{ userFilter.lastName }}</p>
+                        </div>
+                        <div id="imgTicket" class="rowTicket">
+                            {% if userFilter.image %}
+                                <a href="{{ path('app_user',{'pseudo': userFilter.pseudo}) }}">
+                                    <img src="{{ asset('photos/'~userFilter.image) }}" alt="Photo de profil" class="miniPP">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="rowTicket">
+                            <p class="pTicket">Actions</p>
+                            <div class="actionAdm effetneon">
+
+
+                                <a class="actionsList" href="{{ path('app_admin_restric', {'id': userFilter.id}) }}"
+                                   title="update  user">
+                                    {% if userFilter.isActive %}
+                                        <i class="fa-solid fa-user-minus fa-lg"></i>
+                                    {% else %}
+                                        <i class="fa-solid fa-user-check fa-lg"></i>
+                                    {% endif %}
+                                </a>
+
+                                <a class="actionsList" href="{{ path('app_admin_delete', {id: userFilter.id}) }}"
+                                   title="delete  user">
+                                    <i class="fa-solid fa-user-xmark fa-lg"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+
+
+
+{% endblock %}

@@ -15,6 +15,7 @@ class AddFlash extends Session
          $this->getFlashBag()->add('notice','La sorie " '.$hangout->getName().' " à bien été mise à jour');
 
     }
+
 }
 
 

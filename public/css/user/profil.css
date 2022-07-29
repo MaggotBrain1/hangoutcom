@@ -1,0 +1,41 @@
+.userInfoContainer{
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    background-color: rgba(4, 75, 181, 0.8);
+    width: 25%;
+    border-radius: 12px;
+    color: white;
+}
+.userPP{
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+}
+.infoUserRow,.infoUserRowPP{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+.infoUserRow>label{
+    color:#FD99EF;
+    font-size: 18px;
+}
+.infoUserRow>p{
+    font-size: 20px;
+}
+.infoUserRowPP{
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.infoUserRowPP>h2{
+    font-family: 'Neonderthaw', cursive;
+    font-size: 34px;
+    color:#FD99EF;
+
+}

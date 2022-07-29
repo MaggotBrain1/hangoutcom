@@ -1,0 +1,25 @@
+.detailContainer{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 60%;
+    background-color: rgba(4, 75, 181, 0.8);
+    padding: 1%;
+    border-radius: 12px;
+    color: white;
+}
+.detailHangRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 500px;
+}
+.detailHangRow>label{
+    color:#FD99EF;
+    font-size: 18px;
+}
+.usersTabCont>h2{
+    font-family: 'Neonderthaw', cursive;
+}

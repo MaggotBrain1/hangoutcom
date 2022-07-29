@@ -20,7 +20,7 @@ class CrashTestController extends AbstractController
         $user->setRoles(['ROLE_USER']);
         $entityManager->persist($user);
         $entityManager->flush();
-        return $this->render('crash_test/index.html.twig', [
+        return $this->render('mailTemplates/cancelHangout.html.twig', [
             'controller_name' => 'CrashTestController',
         ]);
     }
