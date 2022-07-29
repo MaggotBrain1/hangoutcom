@@ -115,12 +115,14 @@ class HangoutController extends AbstractController
         $placeForm->handleRequest($request);
         $hangoutForm->handleRequest($request);
 
-
-
-
-        if ($hangoutForm->isSubmitted() && $hangoutForm->isValid() ||$placeForm->isSubmitted() && $placeForm->isValid()) {
+        if ( $placeForm->isSubmitted() && $placeForm->isValid()){
             $em->persist($place);
             $em->flush();
+        }
+
+
+        if ($hangoutForm->isSubmitted() && $hangoutForm->isValid()) {
+
             $hangout->setStartTime($hangoutForm["startTime"]->getData());
             $hangout->setRegisterDateLimit($hangoutForm["registerDateLimit"]->getData());
 
