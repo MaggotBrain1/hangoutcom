@@ -72,6 +72,8 @@ class HangoutFullFormType extends AbstractType
             ])
             ->add('registerDateLimit', DateTimeType::class, [
                 'html5' => true,
+                'required' => true,
+
                 'widget' => 'single_text',
                 'label' => 'Date et heure limite d\'inscription',
                 'constraints' => [
@@ -97,6 +99,8 @@ class HangoutFullFormType extends AbstractType
             ])
             ->add('duration', TimeType::class, [
                 'html5' => true,
+                'required' => true,
+
                 'widget' => 'single_text',
                 'label' => 'Durée',
                 'row_attr' => [
@@ -108,6 +112,8 @@ class HangoutFullFormType extends AbstractType
             ])
             ->add('hangoutInformations', TextType::class, [
                 'label' => 'Descripton et infos',
+                'required' => true,
+
                 'row_attr' => [
                     'class' => 'form-floating mb-1',
                 ],
@@ -115,6 +121,7 @@ class HangoutFullFormType extends AbstractType
             ])
             ->add('campusOrganizerSite', EntityType::class, [
                 'label' => 'Campus',
+                'required' => true,
                 'class' => Campus::class,
                 'choice_label' => 'name',
                 'data' => $options['defaultCampus'],

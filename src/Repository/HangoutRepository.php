@@ -76,9 +76,7 @@ class HangoutRepository extends ServiceEntityRepository
         }
 
         if ($imNotIn and !$imIn) {
-            $queryFilter->leftJoin('h.hangouts', 'u')
-                ->leftJoin('h.Status', 's')
-                ->addSelect('s','u')
+            $queryFilter
                 ->andWhere('u.id <> :user')
                 ->andWhere('h.organizer <> :user')
                 ->andWhere('s.id <> 7')

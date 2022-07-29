@@ -12,10 +12,10 @@
             <div class="rowInpt">
                 {{ form_row(filterForm.name) }}
             </div>
-            <div class="rowInpt">
-                sorie/s entre {{ form_row(filterForm.startDate) }}
+            <div class="rowInptDate">
+                sortie/s entre {{ form_row(filterForm.startDate) }}
             </div>
-            <div class="rowInpt">
+            <div class="rowInptDate">
                 et {{ form_row(filterForm.endDate) }}
             </div>
 
@@ -33,16 +33,7 @@
             </div>
         </div>
         <div class="text-center">
-    <span >
-{# read and display all flash messages #}
-        {% for  message in app.flashes('fail') %}
 
-            <div class="flash-fail">
-            {{ message }}
-        </div>
-
-        {% endfor %}
-        </span>
         </div>
         <!-- Modal -->
         <div class="modal fade" id="modalMoreSearch" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -55,20 +46,20 @@
                     </div>
                     <div class="modal-body" id="modal-content">
                         <div class="headFilterCheck">
-                            <div class="rowInpt">
+                            <div class="rowInptFilterS">
                                 {{ form_row(filterForm.isOrganizer) }}<p class="txtCheckFltr">Sorties dont je suis
                                     l'organisateur/trice</p>
                             </div>
-                            <div class="rowInpt">
+                            <div class="rowInptFilterS">
                                 {{ form_row(filterForm.isSubscribe) }}<p class="txtCheckFltr">Sorties auxquelles je suis
                                     inscrit/e</p>
                             </div>
-                            <div class="rowInpt">
+                            <div class="rowInptFilterS">
                                 {{ form_row(filterForm.isNotSuscribe) }}<p class="txtCheckFltr">Sorties auxquelles je ne
                                     suis pas
                                     inscrit/e</p>
                             </div>
-                            <div class="rowInpt">
+                            <div class="rowInptFilterS">
                                 {{ form_row(filterForm.isHangoutPassed) }}<p class="txtCheckFltr">Sorties passées</p>
                             </div>
                         </div>
@@ -83,13 +74,8 @@
             </div>
         </div>
 
-
-        <a class="newHang" href="{{ path('app_hangout_create') }}" title="create a new hangout">Créer une sortie
-            <i class="fa-solid fa-calendar-plus fa-lg"></i>
-        </a>
-
         {% for message in app.flashes('notice') %}
-            <div class="alert alert-info alert-dismissible fade show slideRight">
+            <div id="msgFlashNotice" class="alert alert-info alert-dismissible fade show slideRight">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -112,12 +98,12 @@
 
                 <div class="rowTicket">
                     <p class="pTicket">Date de la sortie</p>
-                    <p>{{ hangout.startTime |date("d/m/Y", "Europe/Paris") }}</p>
+                    <p>{{ hangout.startTime |format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}</p>
                 </div>
 
                 <div class="rowTicket">
                     <p class="pTicket">Clôture</p>
-                    <p>{{ hangout.registerDateLimit |date("d/m/Y", "Europe/Paris") }}</p>
+                    <p>{{ hangout.registerDateLimit |format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}</p>
                 </div>
 
                 <div class="rowTicket">

@@ -13,13 +13,11 @@
 
 <main>
     <div class="text-center">
-        <span >
             {% for  message in app.flashes('fail') %}
-                <div class="flash-fail">
+                <div id="msgFlash" class="flash-fail">
                      {{ message }}
                  </div>
             {% endfor %}
-        </span>
     </div>
     {% block main %}{% endblock %}
 </main>

@@ -188,3 +188,28 @@ h1{
     width: 40%;
     color:#044BB5CC ;
 }
+.manageUserContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: white;
+}
+#userChoices{
+    justify-content: center;
+    color: white;
+
+}
+.actionAdm, .btnAdminSearch{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 80%;
+
+}
+#imgTicket{
+    height: 100%;
+}
+.btnAdminSearch{
+    width: 30%;
+    align-items: center;
+}
